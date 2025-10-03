@@ -3,7 +3,7 @@ requires = ["setuptools>=80.9.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "py-space-api"
+name = "pyspaceapi"
 version = "0.1.0"
 dependencies = [
     "requests>=2.32.5"
