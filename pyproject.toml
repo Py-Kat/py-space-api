@@ -5,21 +5,22 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "pyspaceapi"
 version = "0.1.0"
-dependencies = [
-    "requests>=2.32.5"
-]
+dependencies = ["requests>=2.32.5"]
 authors = [
-    {name = "Kat (Py-Kat)"}
+    {name = "Kat (Py-Kat)", email = "imhelvetika@gmail.com"}
 ]
-description = "A Python API Wrapper for multiple space data related APIs!"
+description = "A Python API Wrapper for multiple space data related APIs! (e.g. NASA & SpaceX APIs)"
 readme = "README.md"
 license = {text = "MIT"}
-license-files = ["LICENSE.txt"]
 keywords = ["space", "api", "multi-api", "wrapper", "data"]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
-    "Programming Language :: Python :: 3.13"
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Software Development :: Libraries :: Python Modules"
 ]
 
 [project.urls]
-Repository = "https://github.com/Py-Kat/py-space-api"
+repository = "https://github.com/Py-Kat/py-space-api"
