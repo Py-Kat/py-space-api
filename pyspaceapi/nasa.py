@@ -6,6 +6,12 @@ from functools import wraps
 
 # Function Timer
 def time_this(func):
+    """
+    This decoratator times the execution
+    of the wrapped function and
+    returns the elapsed time!
+    """
+
     @wraps(func)
     def wrapper(*args, **kwargs):
         start = perf_counter()
@@ -21,10 +27,17 @@ class NASAClient:
 
     def __init__(self, api_key: str = "DEMO_KEY"):
         """
+        This is where you enter your NASA API key
+        for handling all requests made to the NASA API. If
+        you do not have an API key, you can generate
+        your own by clicking this link: https://api.nasa.gov/#signUp.
+
+        Having your own NASA API key will increase the limit
+        of requests to 1000 requests per hour!
+
         :param api_key: Your NASA API key.
-            Defaults to "DEMO_KEY".
-            "DEMO_KEY" will block requests if the
-            30 requests per hour limit is exceeded.
+            This defaults to the DEMO_KEY.
+            (DEMO_KEY is limited to 30 requests per hour!)
         """
 
         self._api_key = api_key
@@ -56,8 +69,8 @@ class NASAClient:
             when used with start_date.
             This defaults to the current date.
 
-        :param count: If this is specified then (count) randomly
-            chosen images will be returned.
+        :param count: If this is specified, the chosen
+            amount of random images will be returned.
             Cannot be used with date or start_date and end_date.
             This defaults to None.
 
@@ -96,7 +109,7 @@ class NASAClient:
     @time_this
     def neows_feed(self,
                  start_date: str | None = None,
-                 end_date: str | None = None,) -> dict:
+                 end_date: str | None = None) -> dict:
         """
         Retrieve a list of Asteroids based on their closest approach date to Earth!
 
@@ -130,7 +143,8 @@ class NASAClient:
         return response.json()
 
     @time_this
-    def neows_lookup(self, asteroid_id: int) -> dict:
+    def neows_lookup(self,
+                     asteroid_id: int) -> dict:
         """
         Lookup a specific asteroid based on its NASA JPL small body (SPK-ID) ID!
 
@@ -223,8 +237,7 @@ class NASAClient:
                            catalog: str | None = None,
                            keyword: str | None = None) -> dict:
         """
-        Retrieves more robust analyses from
-        DONKI Coronal Mass Injections (CMEs)
+        Retrieves more robust analyses from DONKI Coronal Mass Injections (CMEs)
         within a specific time frame!
 
         Date Format: YYYY-MM-DD
@@ -236,7 +249,7 @@ class NASAClient:
             This defaults to the current UTC date.
 
         :param most_accurate_only: Whether or not to only return the CME analysis
-            marked as "best fit" for each CME.
+            marked as "best fit" for each CME entry.
             This defaults to True.
 
         :param complete_entry_only: Whether or not to only return CME analyses
@@ -419,7 +432,8 @@ class NASAClient:
     def donki_sep(self,
                   start_date: str | None = None,
                   end_date: str | None = None) -> dict:
-        """Retrieves DONKI Solar Energetic Particle analyses (SEP)
+        """
+        Retrieves DONKI Solar Energetic Particle analyses (SEP)
         within a specific time frame!
 
         Date Format: YYYY-MM-DD
@@ -529,7 +543,8 @@ class NASAClient:
     def donki_hss(self,
                   start_date: str | None = None,
                   end_date: str | None = None) -> dict:
-        """Retrieves DONKI Hight Speed Stream analyses (HSS)
+        """
+        Retrieves DONKI Hight Speed Stream analyses (HSS)
         within a specific time frame!
 
         Date Format: YYYY-MM-DD
@@ -605,7 +620,7 @@ class NASAClient:
                             notification_type: str | None = None) -> dict:
         """
         Retrieve DONKI Notifications within a specific time frame
-        and a specific notification type!
+        with an optional chosen notification type!
 
         Date Format: YYYY-MM-DD
 
