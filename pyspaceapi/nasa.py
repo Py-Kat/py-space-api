@@ -7,7 +7,7 @@ from functools import wraps
 # Function Timer
 def time_this(func):
     """
-    This decoratator times the execution
+    This decorator times the execution
     of the wrapped function and
     returns the elapsed time!
     """
@@ -70,7 +70,7 @@ class NASAClient:
             This defaults to the current date.
 
         :param count: If this is specified, the chosen
-            amount of random images will be returned.
+            number of random images will be returned.
             Cannot be used with date or start_date and end_date.
             This defaults to None.
 
@@ -470,7 +470,7 @@ class NASAClient:
                   start_date: str | None = None,
                   end_date: str | None = None) -> dict:
         """
-        Retrieves DONKI Megnetopause Crossing analyses (MPC)
+        Retrieves DONKI Magnetopause Crossing analyses (MPC)
         within a specific time frame!
 
         Date Format: YYYY-MM-DD
