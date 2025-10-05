@@ -42,7 +42,9 @@ class NASAClient:
 
         self._api_key = api_key
         self._session = requests.Session()
-        self._base_url = "https://api.nasa.gov"
+
+        # APOD, NeoWs, and DONKI Base Url
+        self._base_url1 = "https://api.nasa.gov"
 
     # Astronomy Picture of the Day API ( APOD )
     @time_this
@@ -80,7 +82,7 @@ class NASAClient:
             This defaults to False.
         """
 
-        url = f"{self._base_url}/planetary/apod"
+        url = f"{self._base_url1}/planetary/apod"
         params = {"api_key": self._api_key}
 
         if date:
@@ -123,7 +125,7 @@ class NASAClient:
             This defaults to 7 days after start_date.
         """
 
-        url = f"{self._base_url}/neo/rest/v1/feed"
+        url = f"{self._base_url1}/neo/rest/v1/feed"
         params = {"api_key": self._api_key}
 
         if start_date:
@@ -153,7 +155,7 @@ class NASAClient:
             This defaults to None.
         """
 
-        url = f"{self._base_url}/neo/rest/v1/neo/{asteroid_id}"
+        url = f"{self._base_url1}/neo/rest/v1/neo/{asteroid_id}"
         params = {"api_key": self._api_key}
 
         try:
@@ -174,7 +176,7 @@ class NASAClient:
         Browse the overall Asteroid data-set!
         """
 
-        url = f"{self._base_url}/neo/rest/v1/neo/browse"
+        url = f"{self._base_url1}/neo/rest/v1/neo/browse"
         params = {"api_key": self._api_key}
 
         try:
@@ -207,7 +209,7 @@ class NASAClient:
             This defaults to the current UTC date.
         """
 
-        url = f"{self._base_url}/DONKI/CME"
+        url = f"{self._base_url1}/DONKI/CME"
         params = {"api_key": self._api_key}
 
         if start_date:
@@ -272,7 +274,7 @@ class NASAClient:
             This defaults to None.
         """
 
-        url = f"{self._base_url}/DONKI/CMEAnalysis"
+        url = f"{self._base_url1}/DONKI/CMEAnalysis"
         params = {"api_key": self._api_key}
 
         if start_date:
@@ -321,7 +323,7 @@ class NASAClient:
             This defaults to the current UTC date.
         """
 
-        url = f"{self._base_url}/DONKI/GST"
+        url = f"{self._base_url1}/DONKI/GST"
         params = {"api_key": self._api_key}
 
         if start_date:
@@ -368,7 +370,7 @@ class NASAClient:
             (Options: SWRC_CATALOG, WINSLOW_MESSENGER_ICME_CATALOG)
         """
 
-        url = f"{self._base_url}/DONKI/IPS"
+        url = f"{self._base_url1}/DONKI/IPS"
         params = {"api_key": self._api_key}
 
         if start_date:
@@ -409,7 +411,7 @@ class NASAClient:
             This defaults to the current UTC date.
         """
 
-        url = f"{self._base_url}/DONKI/FLR"
+        url = f"{self._base_url1}/DONKI/FLR"
         params = {"api_key": self._api_key}
 
         if start_date:
@@ -446,7 +448,7 @@ class NASAClient:
             This defaults to the current UTC date.
         """
 
-        url = f"{self._base_url}/DONKI/SEP"
+        url = f"{self._base_url1}/DONKI/SEP"
         params = {"api_key": self._api_key}
 
         if start_date:
@@ -483,7 +485,7 @@ class NASAClient:
             This defaults to the current UTC date.
         """
 
-        url = f"{self._base_url}/DONKI/MPC"
+        url = f"{self._base_url1}/DONKI/MPC"
         params = {"api_key": self._api_key}
 
         if start_date:
@@ -520,7 +522,7 @@ class NASAClient:
             This defaults to the current UTC date.
         """
 
-        url = f"{self._base_url}/DONKI/RBE"
+        url = f"{self._base_url1}/DONKI/RBE"
         params = {"api_key": self._api_key}
 
         if start_date:
@@ -557,7 +559,7 @@ class NASAClient:
             This defaults to the current UTC date.
         """
 
-        url = f"{self._base_url}/DONKI/HSS"
+        url = f"{self._base_url1}/DONKI/HSS"
         params = {"api_key": self._api_key}
 
         if start_date:
@@ -594,7 +596,7 @@ class NASAClient:
             This defaults to the current UTC date.
         """
 
-        url = f"{self._base_url}/DONKI/WSAEnlilSimulations"
+        url = f"{self._base_url1}/DONKI/WSAEnlilSimulations"
         params = {"api_key": self._api_key}
 
         if start_date:
@@ -636,7 +638,7 @@ class NASAClient:
             (Options: FLR, SEP, CME, IPS, MPC, GST, RBE, report)
         """
 
-        url = f"{self._base_url}/DONKI/notifications"
+        url = f"{self._base_url1}/DONKI/notifications"
         params = {"api_key": self._api_key}
 
         if start_date:
