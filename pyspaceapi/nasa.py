@@ -28,7 +28,7 @@ class NASAClient:
     def __init__(self, api_key: str = "DEMO_KEY"):
         """
         This is where you enter your NASA API key
-        for handling all requests made to the NASA API. If
+        for handling requests made to the NASA API. If
         you do not have an API key, you can generate
         your own by clicking this link: https://api.nasa.gov/#signUp.
 
@@ -53,7 +53,8 @@ class NASAClient:
              count: int | None = None,
              thumbs: bool | None = None) -> dict:
         """
-        NASA Astronomy Picture of the Day (APOD)!
+        Retrieve the NASA Astronomy Picture of the Day (APOD)
+        within a specific time frame and/or count!
 
         Date Format: YYYY-MM-DD
 
@@ -238,7 +239,7 @@ class NASAClient:
                            keyword: str | None = None) -> dict:
         """
         Retrieves more robust analyses from DONKI Coronal Mass Injections (CMEs)
-        within a specific time frame!
+        within a specific time frame, accuracy, catalog, and/or keyword!
 
         Date Format: YYYY-MM-DD
 
@@ -348,7 +349,7 @@ class NASAClient:
                   catalog: str | None = None) -> dict:
         """
         Retrieves DONKI Interplanetary Shock analyses (IPSs)
-        within a specific time frame and in an optional chosen location!
+        within a specific time frame, location, and/or catalog!
 
         Date Format: YYYY-MM-DD
 
@@ -620,7 +621,7 @@ class NASAClient:
                             notification_type: str | None = None) -> dict:
         """
         Retrieve DONKI Notifications within a specific time frame
-        with an optional chosen notification type!
+        and/or a notification type!
 
         Date Format: YYYY-MM-DD
 
