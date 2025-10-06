@@ -46,6 +46,9 @@ class NASAClient:
         # APOD, NeoWs, and DONKI Base Url
         self._base_nasa_url = "https://api.nasa.gov"
 
+        # EONET Base Url
+        self._base_eonet_url = "https://eonet.gsfc.nasa.gov/api/v3"
+
     # Astronomy Picture of the Day API ( APOD )
     @time_this
     def apod(self,
@@ -152,7 +155,6 @@ class NASAClient:
         Lookup a specific asteroid based on its NASA JPL small body (SPK-ID) ID!
 
         :param asteroid_id: Asteroid SPK-ID correlates to the NASA JPL small body.
-            This defaults to None.
         """
 
         url = f"{self._base_nasa_url}/neo/rest/v1/neo/{asteroid_id}"
@@ -650,6 +652,334 @@ class NASAClient:
 
         try:
             response = self._session.get(url, params=params)
+            response.raise_for_status()
+        except HTTPError as e:
+            print(
+                "HTTP error occurred:"
+                f"\n\n{e}"
+            )
+            return {}
+
+        return response.json()
+
+    # The Earth Observatory Natural Event Tracker (EONET)
+    @time_this
+    def eonet_events(self,
+                     source: str | None = None,
+                     category: str | None = None,
+                     status: str | None = None,
+                     limit: int | None = None,
+                     days: int | None = None,
+                     start_date: str | None = None,
+                     end_date: str | None = None,
+                     mag_id: str | None = None,
+                     mag_min: float | None = None,
+                     mag_max: float | None = None,
+                     bounding_box: list[float] | None = None) -> dict:
+        """
+        Retrieve Earth Observatory Natural Event Tracker (EONET)
+        events with up to eleven optional parameters. Such as: Source,
+        category, status, limit, days, time frame, magnitude IDs
+        and values, and a bounding box!
+
+        Date Format: YYYY-MM-DD
+
+        :param source: Filter the returned events by the Source.
+            Multiple sources can be included in the parameter:
+            comma separated, operates as a boolean "OR".
+            Event sources can be found here:
+            https://eonet.gsfc.nasa.gov/api/v3/sources.
+            This defaults to None.
+
+        :param category: Filter the returned events by the category.
+            Multiple sources can be included in the parameter:
+            comma separated, operates as a boolean OR.
+            The acceptable categories can be accessed via the categories JSON:
+            https://eonet.gsfc.nasa.gov/api/v3/categories.
+            This defaults to None.
+
+        :param status: Events that have ended are assigned a closed date
+            and the existence of that date will allow you to filter for
+            only-open or only-closed events. Omitting the status parameter
+            will return only the currently open events (default). Using
+            “all“ will list open and closed values.
+            This can be "open", "closed" or "all".
+            This defaults to None.
+
+        :param limit: Limits the number of events returned.
+            This defaults to None.
+
+        :param days: Limit the number of prior days (including today)
+            from which events will be returned.
+            This defaults to None.
+
+        :param start_date: The starting date for the events to fall between.
+            This defaults to None.
+
+        :param end_date: The ending date for the events to fall between.
+            This defaults to None.
+
+        :param mag_id: The ID of the magnitude in which to search for.
+            This defaults to None.
+
+        :param mag_min: The floor (minimum) magnitude value in which to search for.
+            This defaults to None.
+
+        :param mag_max: The ceiling (maximum) magnitude value in which to search for.
+            This defaults to None.
+
+        :param bounding_box: Query using a bounding box for all events with datapoints
+            that fall within. This uses two pairs of coordinates: min lon, max lat, max lon, min lat.
+        """
+
+        url = f"{self._base_eonet_url}/events"
+        params = {}
+
+        if source:
+            params["source"] = source
+        if category:
+            params["category"] = category
+        if status:
+            params["status"] = status
+        if limit:
+            params["limit"] = limit
+        if days:
+            params["days"] = days
+        if start_date:
+            params["start"] = start_date
+        if end_date:
+            params["end"] = end_date
+        if mag_id:
+            params["magID"] = mag_id
+        if mag_min:
+            params["magMin"] = mag_min
+        if mag_max:
+            params["magMax"] = mag_max
+        if bounding_box:
+            values = ",".join(map(str, bounding_box))
+            params["bbox"] = values
+
+        try:
+            response = self._session.get(url, params=params)
+            response.raise_for_status()
+        except HTTPError as e:
+            print(
+                "HTTP error occurred:"
+                f"\n\n{e}"
+            )
+            return {}
+
+        return response.json()
+
+    @time_this
+    def eonet_events_geojson(self,
+                     source: str | None = None,
+                     category: str | None = None,
+                     status: str | None = None,
+                     limit: int | None = None,
+                     days: int | None = None,
+                     start_date: str | None = None,
+                     end_date: str | None = None,
+                     mag_id: str | None = None,
+                     mag_min: float | None = None,
+                     mag_max: float | None = None,
+                     bounding_box: list[float] | None = None) -> dict:
+        """
+        Retrieve Earth Observatory Natural Event Tracker (EONET)
+        GeoJSON events with up to eleven optional parameters. Such as:
+        Source, category, status, limit, days, time frame, magnitude IDs
+        and values, and a bounding box!
+
+        Date Format: YYYY-MM-DD
+
+        :param source: Filter the returned events by the Source.
+            Multiple sources can be included in the parameter:
+            comma separated, operates as a boolean "OR".
+            Event sources can be found here:
+            https://eonet.gsfc.nasa.gov/api/v3/sources.
+            This defaults to None.
+
+        :param category: Filter the returned events by the category.
+            Multiple sources can be included in the parameter:
+            comma separated, operates as a boolean OR.
+            The acceptable categories can be accessed via the categories JSON:
+            https://eonet.gsfc.nasa.gov/api/v3/categories.
+            This defaults to None.
+
+        :param status: Events that have ended are assigned a closed date
+            and the existence of that date will allow you to filter for
+            only-open or only-closed events. Omitting the status parameter
+            will return only the currently open events (default). Using
+            “all“ will list open and closed values.
+            This can be "open", "closed" or "all".
+            This defaults to None.
+
+        :param limit: Limits the number of events returned.
+            This defaults to None.
+
+        :param days: Limit the number of prior days (including today)
+            from which events will be returned.
+            This defaults to None.
+
+        :param start_date: The starting date for the events to fall between.
+            This defaults to None.
+
+        :param end_date: The ending date for the events to fall between.
+            This defaults to None.
+
+        :param mag_id: The ID of the magnitude in which to search for.
+            This defaults to None.
+
+        :param mag_min: The floor (minimum) magnitude value in which to search for.
+            This defaults to None.
+
+        :param mag_max: The ceiling (maximum) magnitude value in which to search for.
+            This defaults to None.
+
+        :param bounding_box: Query using a bounding box for all events with datapoints
+            that fall within. This uses two pairs of coordinates: min lon, max lat, max lon, min lat.
+        """
+
+        url = f"{self._base_eonet_url}/events"
+        params = {}
+
+        if source:
+            params["source"] = source
+        if category:
+            params["category"] = category
+        if status:
+            params["status"] = status
+        if limit:
+            params["limit"] = limit
+        if days:
+            params["days"] = days
+        if start_date:
+            params["start"] = start_date
+        if end_date:
+            params["end"] = end_date
+        if mag_id:
+            params["magID"] = mag_id
+        if mag_min:
+            params["magMin"] = mag_min
+        if mag_max:
+            params["magMax"] = mag_max
+        if bounding_box:
+            values = ",".join(map(str, bounding_box))
+            params["bbox"] = values
+
+        try:
+            response = self._session.get(url, params=params)
+            response.raise_for_status()
+        except HTTPError as e:
+            print(
+                "HTTP error occurred:"
+                f"\n\n{e}"
+            )
+            return {}
+
+        return response.json()
+
+    @time_this
+    def eonet_categories(self,
+                         category: str | None = None,
+                         source: str | None = None,
+                         status: str | None = None,
+                         limit: int | None = None,
+                         days: int | None = None,
+                         start_date: str | None = None,
+                         end_date: str | None = None) -> dict:
+        """
+        Categories are the types of events by which individual
+        events are cataloged. Categories can be used to filter
+        the output of the Categories API and the Layers API.
+        The acceptable categories can be accessed via the categories JSON:
+        https://eonet.gsfc.nasa.gov/api/v3/categories.
+
+        Date Format: YYYY-MM-DD
+
+        :param category: Filter the returned events by the category.
+            This defaults to None.
+
+        :param source: Filter the topically-constrained events by the Source.
+            Multiple sources can be included in the parameter: comma separated,
+            operates as a boolean "OR".
+
+        :param status: Events that have ended are assigned a closed date
+            and the existence of that date will allow you to filter
+            for only-open or only-closed events. Omitting the status parameter
+            will return only the currently open events.
+            This can be "open", or "closed".
+            This defaults to None.
+
+        :param limit: Limits the number of events returned.
+            This defaults to None.
+
+        :param days: Limit the number of prior days (including today)
+            from which events will be returned.
+            This defaults to None.
+
+        :param start_date: The starting date for the categories to fall between.
+            This defaults to None.
+
+        :param end_date: The ending date for the categories to fall between.
+            This defaults to None.
+        """
+
+        url = f"{self._base_eonet_url}/categories"
+        params = {}
+
+        if category:
+            url = f"{self._base_eonet_url}/categories/{category}"
+        if source:
+            params["source"] = source
+        if status:
+            params["status"] = status
+        if limit:
+            params["limit"] = limit
+        if days:
+            params["days"] = days
+        if start_date:
+            params["start"] = start_date
+        if end_date:
+            params["end"] = end_date
+
+        try:
+            response = self._session.get(url, params=params)
+            response.raise_for_status()
+        except HTTPError as e:
+            print(
+                "HTTP error occurred:"
+                f"\n\n{e}"
+            )
+            return {}
+
+        return response.json()
+
+    @time_this
+    def eonet_layers(self,
+                     category: str):
+        """
+        A Layer is a reference to a specific web service
+        (e.g., WMS, WMTS) that can be used to produce imagery
+        of a particular NASA data parameter. Layers are mapped
+        to categories within EONET to provide a category-specific
+        list of layers (e.g., the ‘Volcanoes’ category is mapped
+        to layers that can provide imagery in true color, SO2,
+        aerosols, etc.). Web services come in a variety of flavors,
+        so it is not possible to include all of the necessary metadata
+        here that is required to construct a properly-formulated request
+        (URL). The full list of layers can be accessed via the layers JSON:
+        https://eonet.gsfc.nasa.gov/api/v3/layers.
+
+        :param category: Filter the returned layers by the category.
+            The acceptable categories can be accessed via the categories JSON:
+            https://eonet.gsfc.nasa.gov/api/v3/categories.
+        """
+
+        url = f"{self._base_eonet_url}/layers/{category}"
+
+        try:
+            response = self._session.get(url)
             response.raise_for_status()
         except HTTPError as e:
             print(
