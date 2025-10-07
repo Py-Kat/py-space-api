@@ -105,7 +105,7 @@ class NASAClient:
         except HTTPError as e:
             print(
                 "HTTP error occurred:"
-                f"\n\n{e}"
+                f"\n{e}"
             )
             return {}
 
@@ -142,7 +142,7 @@ class NASAClient:
         except HTTPError as e:
             print(
                 "HTTP error occurred:"
-                f"\n\n{e}"
+                f"\n{e}"
             )
             return {}
 
@@ -166,7 +166,7 @@ class NASAClient:
         except HTTPError as e:
             print(
                 "HTTP error occurred:"
-                f"\n\n{e}"
+                f"\n{e}"
             )
             return {}
 
@@ -187,7 +187,7 @@ class NASAClient:
         except HTTPError as e:
             print(
                 "HTTP error occurred:"
-                f"\n\n{e}"
+                f"\n{e}"
             )
             return {}
 
@@ -225,7 +225,7 @@ class NASAClient:
         except HTTPError as e:
             print(
                 "HTTP error occurred:"
-                f"\n\n{e}"
+                f"\n{e}"
             )
             return {}
 
@@ -302,7 +302,7 @@ class NASAClient:
         except HTTPError as e:
             print(
                 "HTTP error occurred:"
-                f"\n\n{e}"
+                f"\n{e}"
             )
             return {}
 
@@ -339,7 +339,7 @@ class NASAClient:
         except HTTPError as e:
             print(
                 "HTTP error occurred:"
-                f"\n\n{e}"
+                f"\n{e}"
             )
             return {}
 
@@ -390,7 +390,7 @@ class NASAClient:
         except HTTPError as e:
             print(
                 "HTTP error occurred:"
-                f"\n\n{e}"
+                f"\n{e}"
             )
             return {}
 
@@ -427,7 +427,7 @@ class NASAClient:
         except HTTPError as e:
             print(
                 "HTTP error occurred:"
-                f"\n\n{e}"
+                f"\n{e}"
             )
             return {}
 
@@ -464,7 +464,7 @@ class NASAClient:
         except HTTPError as e:
             print(
                 "HTTP error occurred:"
-                f"\n\n{e}"
+                f"\n{e}"
             )
             return {}
 
@@ -501,7 +501,7 @@ class NASAClient:
         except HTTPError as e:
             print(
                 "HTTP error occurred:"
-                f"\n\n{e}"
+                f"\n{e}"
             )
             return {}
 
@@ -538,7 +538,7 @@ class NASAClient:
         except HTTPError as e:
             print(
                 "HTTP error occurred:"
-                f"\n\n{e}"
+                f"\n{e}"
             )
             return {}
 
@@ -575,7 +575,7 @@ class NASAClient:
         except HTTPError as e:
             print(
                 "HTTP error occurred:"
-                f"\n\n{e}"
+                f"\n{e}"
             )
             return {}
 
@@ -612,7 +612,7 @@ class NASAClient:
         except HTTPError as e:
             print(
                 "HTTP error occurred:"
-                f"\n\n{e}"
+                f"\n{e}"
             )
             return {}
 
@@ -656,7 +656,7 @@ class NASAClient:
         except HTTPError as e:
             print(
                 "HTTP error occurred:"
-                f"\n\n{e}"
+                f"\n{e}"
             )
             return {}
 
@@ -765,7 +765,7 @@ class NASAClient:
         except HTTPError as e:
             print(
                 "HTTP error occurred:"
-                f"\n\n{e}"
+                f"\n{e}"
             )
             return {}
 
@@ -873,7 +873,7 @@ class NASAClient:
         except HTTPError as e:
             print(
                 "HTTP error occurred:"
-                f"\n\n{e}"
+                f"\n{e}"
             )
             return {}
 
@@ -949,7 +949,7 @@ class NASAClient:
         except HTTPError as e:
             print(
                 "HTTP error occurred:"
-                f"\n\n{e}"
+                f"\n{e}"
             )
             return {}
 
@@ -984,7 +984,7 @@ class NASAClient:
         except HTTPError as e:
             print(
                 "HTTP error occurred:"
-                f"\n\n{e}"
+                f"\n{e}"
             )
             return {}
 
