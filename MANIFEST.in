@@ -1,0 +1,2 @@
+exclude testing.py
+exclude .env
