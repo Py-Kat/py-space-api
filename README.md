@@ -163,11 +163,9 @@ I have not found a
 reason to do so yet.
 
 To access these, input your
-NASA API key or ignore
-this step if you plan
-on only using the Demo
-Key. This is done like
-so:
+NASA API key, or leave
+the parameter empty to use
+the NASA Demo Key.
 
 ```
 python
@@ -175,8 +173,8 @@ python
 from pyspaceapi import NASAClient
 
 
-# Replace 'DEMO_KEY' if you plan to use your own NASA API key!
-client = NASAClient("DEMO_KEY")
+# This uses the Demo Key by default
+client = NASAClient()
 ```
 
 After this, you are ready
