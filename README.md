@@ -163,7 +163,7 @@ I have not found a
 reason to do so yet.
 
 To access these, input your
-NASA API key, or leave
+NASA API key or leave
 the parameter empty to use
 the NASA Demo Key.
 
@@ -755,6 +755,43 @@ it exists).
 
 </details>
 
+
+### Function Timer:
+
+Along with the endpoint methods,
+I have included a function
+timer which can be imported
+and used as a decorator
+to print the elapsed time
+in which it takes the
+decorated function to complete execution!
+
+Usage would appear something
+like this:
+```
+python
+
+from pyspaceapi.func_timer import time_this
+import time
+
+
+@time_this
+def do_something():
+    time.sleep(1.7)
+    print("Did something!")
+
+do_something()
+```
+
+The output:
+```
+console
+
+Did something!
+
+
+(Finished in: 1.7000 seconds.)
+```
 
 
 # | Final Notes:
