@@ -1,6 +1,7 @@
 from time import perf_counter
 from functools import wraps
 
+
 def time_this(func):
     """
     This decorator can be used
