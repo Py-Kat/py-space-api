@@ -1,26 +1,5 @@
 import requests
 from requests.exceptions import HTTPError
-from time import perf_counter
-from functools import wraps
-
-
-# Function Timer
-def time_this(func):
-    """
-    This decorator times the execution
-    of the wrapped function and
-    returns the elapsed time!
-    """
-
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        start = perf_counter()
-        func(*args, **kwargs)
-        end = perf_counter()
-        elapsed_time = end - start
-        print(f"(Request finished in: {elapsed_time:.4f} seconds.)\n\n")
-        return func(*args, **kwargs)
-    return wrapper
 
 
 class NASAClient:
@@ -50,7 +29,6 @@ class NASAClient:
         self._base_eonet_url = "https://eonet.gsfc.nasa.gov/api/v3"
 
     # Astronomy Picture of the Day API ( APOD )
-    @time_this
     def apod(self,
              date: str | None = None,
              start_date: str | None = None,
@@ -112,7 +90,6 @@ class NASAClient:
         return response.json()
 
     # Near Earth Object Web Service ( NeoWs )
-    @time_this
     def neows_feed(self,
                  start_date: str | None = None,
                  end_date: str | None = None) -> dict:
@@ -148,7 +125,6 @@ class NASAClient:
 
         return response.json()
 
-    @time_this
     def neows_lookup(self,
                      asteroid_id: int) -> dict:
         """
@@ -172,7 +148,6 @@ class NASAClient:
 
         return response.json()
 
-    @time_this
     def neows_browse(self) -> dict:
         """
         Browse the overall Asteroid data-set!
@@ -194,7 +169,6 @@ class NASAClient:
         return response.json()
 
     # Space Weather Database Of Notifications, Knowledge, Information ( DONKI )
-    @time_this
     def donki_cme(self,
                   start_date: str | None = None,
                   end_date: str | None = None) -> dict:
@@ -231,7 +205,6 @@ class NASAClient:
 
         return response.json()
 
-    @time_this
     def donki_cme_analysis(self,
                            start_date: str | None = None,
                            end_date: str | None = None,
@@ -308,7 +281,6 @@ class NASAClient:
 
         return response.json()
 
-    @time_this
     def donki_gst(self,
                   start_date: str | None = None,
                   end_date: str | None = None) -> dict:
@@ -345,7 +317,6 @@ class NASAClient:
 
         return response.json()
 
-    @time_this
     def donki_ips(self,
                   start_date: str | None = None,
                   end_date: str | None = None,
@@ -396,7 +367,6 @@ class NASAClient:
 
         return response.json()
 
-    @time_this
     def donki_flr(self,
                   start_date: str | None = None,
                   end_date: str | None = None) -> dict:
@@ -433,7 +403,6 @@ class NASAClient:
 
         return response.json()
 
-    @time_this
     def donki_sep(self,
                   start_date: str | None = None,
                   end_date: str | None = None) -> dict:
@@ -470,7 +439,6 @@ class NASAClient:
 
         return response.json()
 
-    @time_this
     def donki_mpc(self,
                   start_date: str | None = None,
                   end_date: str | None = None) -> dict:
@@ -507,7 +475,6 @@ class NASAClient:
 
         return response.json()
 
-    @time_this
     def donki_rbe(self,
                   start_date: str | None = None,
                   end_date: str | None = None) -> dict:
@@ -544,7 +511,6 @@ class NASAClient:
 
         return response.json()
 
-    @time_this
     def donki_hss(self,
                   start_date: str | None = None,
                   end_date: str | None = None) -> dict:
@@ -581,7 +547,6 @@ class NASAClient:
 
         return response.json()
 
-    @time_this
     def donki_wsa_es(self,
                      start_date: str | None = None,
                      end_date: str | None = None) -> dict:
@@ -618,7 +583,6 @@ class NASAClient:
 
         return response.json()
 
-    @time_this
     def donki_notifications(self,
                             start_date: str | None = None,
                             end_date: str | None = None,
@@ -663,7 +627,6 @@ class NASAClient:
         return response.json()
 
     # The Earth Observatory Natural Event Tracker (EONET)
-    @time_this
     def eonet_events(self,
                      source: str | None = None,
                      category: str | None = None,
@@ -771,7 +734,6 @@ class NASAClient:
 
         return response.json()
 
-    @time_this
     def eonet_events_geojson(self,
                      source: str | None = None,
                      category: str | None = None,
@@ -879,7 +841,6 @@ class NASAClient:
 
         return response.json()
 
-    @time_this
     def eonet_categories(self,
                          category: str | None = None,
                          source: str | None = None,
@@ -955,7 +916,6 @@ class NASAClient:
 
         return response.json()
 
-    @time_this
     def eonet_layers(self,
                      category: str):
         """
