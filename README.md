@@ -21,99 +21,176 @@ non-NASA APIs!
 
 Currently, this wrapper contains **nineteen**
 (out of MANY) planned endpoints
-from NASA APIs!
+from NASA, and other API's
+in the future!
 
 ## | Currently Supported Endpoints:
 
-*These explanations are sourced from
-the [**official NASA APIs page**](https://api.nasa.gov)*
+> [!NOTE]
+> 
+> ***Explanations and in-depth documentation seen
+> here are provided by the
+> [**official NASA APIs page**](https://api.nasa.gov)***.
 
-- [**Astronomy Picture of the Day**](https://apod.nasa.gov/apod/astropix.html) (APOD)
+### [**Astronomy Picture of the Day**](https://apod.nasa.gov/apod/astropix.html) (APOD)
 
-  - This endpoint structures the APOD
+"This endpoint structures the APOD
 imagery and associated metadata so
 that it can be repurposed
-for other applications. The full
-documentation for this API can
-be found in the [**APOD
+for other applications."
+
+  - [**apod**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L32)
+    - This endpoint structures the APOD
+    imagery and associated metadata so
+    that it can be repurposed
+    for other applications. The full
+    documentation for this API can
+    be found in the [**APOD
 API GitHub repository**](https://github.com/nasa/apod-api)
 
 
-- [**Near Earth Object Web Service**](https://cneos.jpl.nasa.gov) (Asteroids NeoWs)
+### [**Near Earth Object Web Service**](https://cneos.jpl.nasa.gov) (Asteroids NeoWs)
 
-  - Neo - Feed
-    - Retrieve a list of Asteroids based on their closest approach date to Earth.
+"NeoWs (Near Earth Object Web
+Service) is a RESTful web
+service for near earth Asteroid
+information. With NeoWs a user
+can: search for Asteroids based
+on their closest approach date
+to Earth, lookup a specific
+Asteroid with its NASA JPL
+small body id, as well
+as browse the overall data-set."
 
-  - Neo - Lookup
-    - Look up a specific Asteroid based on its [**NASA JPL small body (SPK-ID) ID**](http://ssd.jpl.nasa.gov/sbdb_query.cgi)
+  - [**Neo - Feed**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L93)
+    - "Retrieve a list of Asteroids based on their closest approach date to Earth."
 
-  - Neo - Browse
-    - Browse the overall Asteroid data-set
+  - [**Neo - Lookup**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L128)
+    - "Look up a specific Asteroid based on its [**NASA JPL small body (SPK-ID) ID**](http://ssd.jpl.nasa.gov/sbdb_query.cgi)"
+
+  - [**Neo - Browse**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L151)
+    - "Browse the overall Asteroid data-set"
 
 
-- [**Space Weather Database Of Notifications, Knowledge, Information**](https://ccmc.gsfc.nasa.gov/tools/DONKI) (DONKI)
+### [**Space Weather Database Of Notifications, Knowledge, Information**](https://ccmc.gsfc.nasa.gov/tools/DONKI) (DONKI)
 
-*Unfortunately, there is not much
-documentation provided for these endpoints
-on the API's page (That
-I could find), so I've
-opted here instead for simple
-explanations rather than risking misleading
-information.*
+"The Space Weather Database Of
+Notifications, Knowledge, Information (DONKI) is
+a comprehensive on-line tool for
+space weather forecasters, scientists, and
+the general space science community.
+DONKI chronicles the daily interpretations
+of space weather observations, analysis,
+models, forecasts, and notifications provided
+by the Space Weather Research
+Center (SWRC), comprehensive knowledge-base search
+functionality to support anomaly resolution
+and space science research, intelligent
+linkages, relationships, cause-and-effects between space
+weather activities and comprehensive webservice
+API access to information stored
+in DONKI."
 
-  - Coronal Mass Ejection (CME)
+  - [**Coronal Mass Ejection**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L172) (CME)
     - Retrieves basic DONKI Coronal Mass Injection analyses (CMEs)
     within a specific time frame!
 
 
-  - Coronal Mass Ejection Analysis
+  - [**Coronal Mass Ejection Analysis**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L208)
     - Retrieves more robust analyses from DONKI Coronal Mass Injections (CMEs)
     within a specific time frame, accuracy, catalog, and/or keyword!
   
 
-  - Geomagnetic Storm (GST)
+  - [**Geomagnetic Storm**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L284) (GST)
     - Retrieves DONKI Geomagnetic Storm analyses (GSTs)
     within a specific time frame!
 
 
-  - Interplanetary Shock (IPS)
+  - [**Interplanetary Shock**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L320) (IPS)
     - Retrieves DONKI Interplanetary Shock analyses (IPSs)
     within a specific time frame, location, and/or catalog!
 
 
-  - Solar Flare (FLR)
+  - [**Solar Flare**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L370) (FLR)
     - Retrieves DONKI Solar Flare analyses (FLRs)
     within a specific time frame!
 
 
-  - Solar Energetic Particle (SEP)
+  - [**Solar Energetic Particle**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L406) (SEP)
     - Retrieves DONKI Solar Energetic Particle analyses (SEP)
     within a specific time frame!
 
 
-  - Magnetopause Crossing (MCP)
+  - [**Magnetopause Crossing**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L442) (MCP)
     - Retrieves DONKI Magnetopause Crossing analyses (MPC)
     within a specific time frame!
 
 
-  - Radiation Belt Enhancement (RBE)
+  - [**Radiation Belt Enhancement**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L478) (RBE)
     - Retrieves DONKI Radiation Belt Enhancement analyses (RBE)
     within a specific time frame!
 
 
-  - Hight Speed Stream (HSS)
+  - [**Hight Speed Stream**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L514) (HSS)
     - Retrieves DONKI Hight Speed Stream analyses (HSS)
     within a specific time frame!
 
 
-  - WSA+EnlilSimulation
+  - [**WSA+EnlilSimulation**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L550)
     - Retrieves DONKI WSA+EnlilSimulation analyses
     within a specific time frame!
 
 
-  - Notifications
+  - [**Notifications**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L586)
     - Retrieve DONKI Notifications within a specific time frame
     and/or a notification type!
+
+
+### [**The Earth Observatory Natural Event Tracker**](https://earthobservatory.nasa.gov) (EONET)
+
+"The Earth Observatory Natural Event
+Tracker (EONET) is a prototype
+web service with the goal
+of:
+
+providing a curated source of
+continuously updated natural event metadata;
+providing a service that links
+those natural events to thematically-related
+web service-enabled image sources (e.g., via WMS, WMTS, etc.)."
+
+  - [**Events**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L630)
+    - "Retrieve Earth Observatory Natural Event Tracker (EONET)
+    events with up to eleven optional parameters. Such as: Source,
+    category, status, limit, days, time frame, magnitude IDs
+    and values, and a bounding box!"
+
+
+  - [**Events GeoJSON**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L737)
+    - "Retrieve Earth Observatory Natural Event Tracker (EONET)
+    GeoJSON events with up to eleven optional parameters. Such as:
+    Source, category, status, limit, days, time frame, magnitude IDs
+    and values, and a bounding box!"
+
+
+  - [**Categories**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L844)
+    - "Categories are the types of events by which individual
+    events are cataloged. Categories can be used to filter
+    the output of the Categories API and the Layers API.
+    The acceptable categories can be accessed via the [**categories JSON**](https://eonet.gsfc.nasa.gov/api/v3/categories)."
+
+
+  - [**Layers**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L919)
+    - "A Layer is a reference to a specific web service
+      (e.g., WMS, WMTS) that can be used to produce imagery
+      of a particular NASA data parameter. Layers are mapped
+      to categories within EONET to provide a category-specific
+      list of layers (e.g., the ‘Volcanoes’ category is mapped
+      to layers that can provide imagery in true color, SO2,
+      aerosols, etc.). Web services come in a variety of flavors,
+      so it is not possible to include all of the necessary metadata
+      here that is required to construct a properly-formulated request
+      (URL). The full list of layers can be accessed via the [**layers JSON**](https://eonet.gsfc.nasa.gov/api/v3/layers)."
 
 
 ## | Installing The Package:
@@ -772,12 +849,12 @@ like this:
 python
 
 from pyspaceapi.debugtools import time_this
-import time
+from time import sleep
 
 
 @time_this
 def do_something():
-    time.sleep(1.7)
+    sleep(1.7)
     print("Did something!")
 
 do_something()
