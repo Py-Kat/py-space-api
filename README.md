@@ -771,7 +771,7 @@ like this:
 ```
 python
 
-from pyspaceapi.func_timer import time_this
+from pyspaceapi.debugtools import time_this
 import time
 
 
