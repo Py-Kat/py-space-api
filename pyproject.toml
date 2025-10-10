@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyspaceapi"
-version = "0.2.1"
+version = "0.3.0"
 dependencies = ["requests ~= 2.32"]
 authors = [
     {name = "Kat (Py-Kat)", email = "imhelvetika@gmail.com"}

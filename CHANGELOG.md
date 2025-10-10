@@ -8,11 +8,24 @@
 
 ## 0.2.0 - 2025-10-06
 
-- Added support for all NASA EONET endpoints
+- Added support for all NASA
+EONET endpoints
 
-- Rephrased some text and fixed typos in docstrings
+- Rephrased some text and fixed
+typos in docstrings
 
 
 ## 0.2.1 - 2025-10-07
 
-- Removed an extra second newline from HTTP Error messages
+- Removed an extra second newline
+from HTTP Error messages
+
+
+## 0.3.0 - 2025-10-10
+
+- Removed the 'time this' decorator
+from class methods by default
+
+- Moved the 'time this' decorator
+into it's own importable 'debugtools'
+module
