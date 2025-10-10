@@ -3,3 +3,4 @@ testing.py
 .env
 __pycache__
 requirements.txt
+build
