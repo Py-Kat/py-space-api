@@ -10,7 +10,7 @@ authors = [
     {name = "Kat (Py-Kat)", email = "imhelvetika@gmail.com"}
 ]
 description = "A Python API Wrapper for retrieving astronomical data from multiple APIs! (e.g. NASA & SpaceX APIs)"
-readme = "README.md"
+readme = {file = "README.md", content-type = "text/markdown"}
 license-files = ["LICENSE.txt"]
 keywords = ["space", "api", "multi-api", "wrapper", "data"]
 classifiers = [
