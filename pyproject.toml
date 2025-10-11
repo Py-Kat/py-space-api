@@ -21,8 +21,9 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Natural Language :: English",
     "Intended Audience :: Developers",
-    "Topic :: Software Development :: Build Tools",
-    "Topic :: Software Development :: Libraries :: Python Modules"
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Astronomy",
+    "Topic :: Internet :: WWW/HTTP"
 ]
 
 [project.urls]
