@@ -36,30 +36,37 @@ class NASAClient:
              count: int | None = None,
              thumbs: bool | None = None) -> dict:
         """
-        Retrieve the NASA Astronomy Picture of the Day (APOD)
-        within a specific time frame and/or count!
+        "This endpoint structures the APOD
+        imagery and associated metadata so
+        that it can be repurposed
+        for other applications!"
+
+        "The full documentation for this
+        API can be found in
+        the APOD API Github repository:
+        https://github.com/nasa/apod-api."
 
         Date Format: YYYY-MM-DD
 
         :param date: The date of the APOD image to retrieve.
             This defaults to the current date.
 
-        :param start_date: The start of a date range,
-            when requesting for a range of dates.
+        :param start_date: "The start of a date range,
+            when requesting for a range of dates."
             Cannot be used with date.
             This defaults to None.
 
-        :param end_date: The end of a date range,
-            when used with start_date.
+        :param end_date: "The end of a date range,
+            when used with start_date."
             This defaults to the current date.
 
-        :param count: If this is specified, the chosen
+        :param count: "If this is specified, the chosen
             number of random images will be returned.
-            Cannot be used with date or start_date and end_date.
+            Cannot be used with date or start_date and end_date."
             This defaults to None.
 
-        :param thumbs: Return the URL of a video thumbnail.
-            If an APOD is not a video, this parameter is ignored.
+        :param thumbs: "Return the URL of a video thumbnail.
+            If an APOD is not a video, this parameter is ignored."
             This defaults to False.
         """
 
@@ -90,7 +97,7 @@ class NASAClient:
                  start_date: str | None = None,
                  end_date: str | None = None) -> dict:
         """
-        Retrieve a list of Asteroids based on their closest approach date to Earth!
+        "Retrieve a list of Asteroids based on their closest approach date to Earth!"
 
         Date Format: YYYY-MM-DD
 
@@ -120,7 +127,9 @@ class NASAClient:
     def neows_lookup(self,
                      asteroid_id: int) -> dict:
         """
-        Lookup a specific asteroid based on its NASA JPL small body (SPK-ID) ID!
+        "Lookup a specific asteroid based on its NASA JPL small body (SPK-ID) ID!"
+
+        Small-Body Database Queries: https://ssd.jpl.nasa.gov/tools/sbdb_query.html
 
         :param asteroid_id: Asteroid SPK-ID correlates to the NASA JPL small body.
         """
@@ -138,7 +147,7 @@ class NASAClient:
 
     def neows_browse(self) -> dict:
         """
-        Browse the overall Asteroid data-set!
+        "Browse the overall Asteroid data-set!"
         """
 
         url = f"{self._base_nasa_url}/neo/rest/v1/neo/browse"
@@ -782,32 +791,32 @@ class NASAClient:
                          start_date: str | None = None,
                          end_date: str | None = None) -> dict:
         """
-        Categories are the types of events by which individual
+        "Categories are the types of events by which individual
         events are cataloged. Categories can be used to filter
         the output of the Categories API and the Layers API.
         The acceptable categories can be accessed via the categories JSON:
-        https://eonet.gsfc.nasa.gov/api/v3/categories.
+        https://eonet.gsfc.nasa.gov/api/v3/categories."
 
         Date Format: YYYY-MM-DD
 
-        :param category: Filter the returned events by the category.
+        :param category: "Filter the returned events by the category."
             This defaults to None.
 
-        :param source: Filter the topically-constrained events by the Source.
+        :param source: "Filter the topically-constrained events by the Source.
             Multiple sources can be included in the parameter: comma separated,
-            operates as a boolean "OR".
+            operates as a boolean "OR"."
 
-        :param status: Events that have ended are assigned a closed date
+        :param status: "Events that have ended are assigned a closed date
             and the existence of that date will allow you to filter
             for only-open or only-closed events. Omitting the status parameter
-            will return only the currently open events.
+            will return only the currently open events."
             This can be "open", or "closed".
             This defaults to None.
 
-        :param limit: Limits the number of events returned.
+        :param limit: "Limits the number of events returned."
             This defaults to None.
 
-        :param days: Limit the number of prior days (including today)
+        :param days: "Limit the number of prior days (including today)"
             from which events will be returned.
             This defaults to None.
 
@@ -847,7 +856,7 @@ class NASAClient:
     def eonet_layers(self,
                      category: str):
         """
-        A Layer is a reference to a specific web service
+        "A Layer is a reference to a specific web service
         (e.g., WMS, WMTS) that can be used to produce imagery
         of a particular NASA data parameter. Layers are mapped
         to categories within EONET to provide a category-specific
@@ -857,11 +866,11 @@ class NASAClient:
         so it is not possible to include all of the necessary metadata
         here that is required to construct a properly-formulated request
         (URL). The full list of layers can be accessed via the layers JSON:
-        https://eonet.gsfc.nasa.gov/api/v3/layers.
+        https://eonet.gsfc.nasa.gov/api/v3/layers."
 
-        :param category: Filter the returned layers by the category.
+        :param category: "Filter the returned layers by the category.
             The acceptable categories can be accessed via the categories JSON:
-            https://eonet.gsfc.nasa.gov/api/v3/categories.
+            https://eonet.gsfc.nasa.gov/api/v3/categories."
         """
 
         url = f"{self._base_eonet_url}/layers/{category}"
