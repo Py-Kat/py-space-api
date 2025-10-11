@@ -40,10 +40,10 @@ the [**APOD API GitHub
 repository**](https://github.com/nasa/apod-api)"
 
   - [**apod**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L32)
-    - This endpoint structures the APOD
+    - "This endpoint structures the APOD
     imagery and associated metadata so
     that it can be repurposed
-    for other applications.
+    for other applications."
 
 
 ### [**Near Earth Object Web Service**](https://cneos.jpl.nasa.gov) (Asteroids NeoWs)
