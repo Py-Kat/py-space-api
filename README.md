@@ -34,19 +34,16 @@ in the future!
 
 ### [**Astronomy Picture of the Day**](https://apod.nasa.gov/apod/astropix.html) (APOD)
 
-"This endpoint structures the APOD
-imagery and associated metadata so
-that it can be repurposed
-for other applications."
+"The full documentation for this
+API can be found in
+the [**APOD API GitHub
+repository**](https://github.com/nasa/apod-api)"
 
   - [**apod**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L32)
     - This endpoint structures the APOD
     imagery and associated metadata so
     that it can be repurposed
-    for other applications. The full
-    documentation for this API can
-    be found in the [**APOD
-API GitHub repository**](https://github.com/nasa/apod-api)
+    for other applications.
 
 
 ### [**Near Earth Object Web Service**](https://cneos.jpl.nasa.gov) (Asteroids NeoWs)
