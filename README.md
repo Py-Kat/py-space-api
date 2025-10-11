@@ -196,18 +196,24 @@ via PIP or installed manually
 via the release downloads on
 GitHub!
 
+Due to a conflict with
+an apparent non-existent package on
+PyPI, the installation name is
+*slightly* different than the one
+used for everything else.
+
 PIP Install:
 ```
 shell
 
-pip install pyspaceapi
+pip install pyspaceapis
 ```
 
 Manual Install:
 ```
 shell
 
-pip install "PATH\TO\pyspaceapi-0.4.0-py3-none-any.whl"
+pip install "PATH\TO\pyspaceapis-0.4.0-py3-none-any.whl"
 ```
 
 Dependencies can be viewed on
