@@ -80,14 +80,10 @@ class NASAClient:
         try:
             response = self._session.get(url, params=params)
             response.raise_for_status()
-        except HTTPError as e:
-            print(
-                "HTTP error occurred:"
-                f"\n{e}"
-            )
-            return {}
 
-        return response.json()
+            return response.json()
+        except HTTPError:
+            raise
 
     # Near Earth Object Web Service ( NeoWs )
     def neows_feed(self,
@@ -116,14 +112,10 @@ class NASAClient:
         try:
             response = self._session.get(url, params=params)
             response.raise_for_status()
-        except HTTPError as e:
-            print(
-                "HTTP error occurred:"
-                f"\n{e}"
-            )
-            return {}
 
-        return response.json()
+            return response.json()
+        except HTTPError:
+            raise
 
     def neows_lookup(self,
                      asteroid_id: int) -> dict:
@@ -139,14 +131,10 @@ class NASAClient:
         try:
             response = self._session.get(url, params=params)
             response.raise_for_status()
-        except HTTPError as e:
-            print(
-                "HTTP error occurred:"
-                f"\n{e}"
-            )
-            return {}
 
-        return response.json()
+            return response.json()
+        except HTTPError:
+            raise
 
     def neows_browse(self) -> dict:
         """
@@ -159,14 +147,10 @@ class NASAClient:
         try:
             response = self._session.get(url, params=params)
             response.raise_for_status()
-        except HTTPError as e:
-            print(
-                "HTTP error occurred:"
-                f"\n{e}"
-            )
-            return {}
 
-        return response.json()
+            return response.json()
+        except HTTPError:
+            raise
 
     # Space Weather Database Of Notifications, Knowledge, Information ( DONKI )
     def donki_cme(self,
@@ -196,14 +180,10 @@ class NASAClient:
         try:
             response = self._session.get(url, params=params)
             response.raise_for_status()
-        except HTTPError as e:
-            print(
-                "HTTP error occurred:"
-                f"\n{e}"
-            )
-            return {}
 
-        return response.json()
+            return response.json()
+        except HTTPError:
+            raise
 
     def donki_cme_analysis(self,
                            start_date: str | None = None,
@@ -272,14 +252,10 @@ class NASAClient:
         try:
             response = self._session.get(url, params=params)
             response.raise_for_status()
-        except HTTPError as e:
-            print(
-                "HTTP error occurred:"
-                f"\n{e}"
-            )
-            return {}
 
-        return response.json()
+            return response.json()
+        except HTTPError:
+            raise
 
     def donki_gst(self,
                   start_date: str | None = None,
@@ -308,14 +284,10 @@ class NASAClient:
         try:
             response = self._session.get(url, params=params)
             response.raise_for_status()
-        except HTTPError as e:
-            print(
-                "HTTP error occurred:"
-                f"\n{e}"
-            )
-            return {}
 
-        return response.json()
+            return response.json()
+        except HTTPError:
+            raise
 
     def donki_ips(self,
                   start_date: str | None = None,
@@ -358,14 +330,10 @@ class NASAClient:
         try:
             response = self._session.get(url, params=params)
             response.raise_for_status()
-        except HTTPError as e:
-            print(
-                "HTTP error occurred:"
-                f"\n{e}"
-            )
-            return {}
 
-        return response.json()
+            return response.json()
+        except HTTPError:
+            raise
 
     def donki_flr(self,
                   start_date: str | None = None,
@@ -394,14 +362,10 @@ class NASAClient:
         try:
             response = self._session.get(url, params=params)
             response.raise_for_status()
-        except HTTPError as e:
-            print(
-                "HTTP error occurred:"
-                f"\n{e}"
-            )
-            return {}
 
-        return response.json()
+            return response.json()
+        except HTTPError:
+            raise
 
     def donki_sep(self,
                   start_date: str | None = None,
@@ -430,14 +394,10 @@ class NASAClient:
         try:
             response = self._session.get(url, params=params)
             response.raise_for_status()
-        except HTTPError as e:
-            print(
-                "HTTP error occurred:"
-                f"\n{e}"
-            )
-            return {}
 
-        return response.json()
+            return response.json()
+        except HTTPError:
+            raise
 
     def donki_mpc(self,
                   start_date: str | None = None,
@@ -466,14 +426,10 @@ class NASAClient:
         try:
             response = self._session.get(url, params=params)
             response.raise_for_status()
-        except HTTPError as e:
-            print(
-                "HTTP error occurred:"
-                f"\n{e}"
-            )
-            return {}
 
-        return response.json()
+            return response.json()
+        except HTTPError:
+            raise
 
     def donki_rbe(self,
                   start_date: str | None = None,
@@ -502,14 +458,10 @@ class NASAClient:
         try:
             response = self._session.get(url, params=params)
             response.raise_for_status()
-        except HTTPError as e:
-            print(
-                "HTTP error occurred:"
-                f"\n{e}"
-            )
-            return {}
 
-        return response.json()
+            return response.json()
+        except HTTPError:
+            raise
 
     def donki_hss(self,
                   start_date: str | None = None,
@@ -538,14 +490,10 @@ class NASAClient:
         try:
             response = self._session.get(url, params=params)
             response.raise_for_status()
-        except HTTPError as e:
-            print(
-                "HTTP error occurred:"
-                f"\n{e}"
-            )
-            return {}
 
-        return response.json()
+            return response.json()
+        except HTTPError:
+            raise
 
     def donki_wsa_es(self,
                      start_date: str | None = None,
@@ -574,14 +522,10 @@ class NASAClient:
         try:
             response = self._session.get(url, params=params)
             response.raise_for_status()
-        except HTTPError as e:
-            print(
-                "HTTP error occurred:"
-                f"\n{e}"
-            )
-            return {}
 
-        return response.json()
+            return response.json()
+        except HTTPError:
+            raise
 
     def donki_notifications(self,
                             start_date: str | None = None,
@@ -617,14 +561,10 @@ class NASAClient:
         try:
             response = self._session.get(url, params=params)
             response.raise_for_status()
-        except HTTPError as e:
-            print(
-                "HTTP error occurred:"
-                f"\n{e}"
-            )
-            return {}
 
-        return response.json()
+            return response.json()
+        except HTTPError:
+            raise
 
     # The Earth Observatory Natural Event Tracker (EONET)
     def eonet_events(self,
@@ -725,14 +665,10 @@ class NASAClient:
         try:
             response = self._session.get(url, params=params)
             response.raise_for_status()
-        except HTTPError as e:
-            print(
-                "HTTP error occurred:"
-                f"\n{e}"
-            )
-            return {}
 
-        return response.json()
+            return response.json()
+        except HTTPError:
+            raise
 
     def eonet_events_geojson(self,
                      source: str | None = None,
@@ -832,14 +768,10 @@ class NASAClient:
         try:
             response = self._session.get(url, params=params)
             response.raise_for_status()
-        except HTTPError as e:
-            print(
-                "HTTP error occurred:"
-                f"\n{e}"
-            )
-            return {}
 
-        return response.json()
+            return response.json()
+        except HTTPError:
+            raise
 
     def eonet_categories(self,
                          category: str | None = None,
@@ -907,14 +839,10 @@ class NASAClient:
         try:
             response = self._session.get(url, params=params)
             response.raise_for_status()
-        except HTTPError as e:
-            print(
-                "HTTP error occurred:"
-                f"\n{e}"
-            )
-            return {}
 
-        return response.json()
+            return response.json()
+        except HTTPError:
+            raise
 
     def eonet_layers(self,
                      category: str):
@@ -941,11 +869,7 @@ class NASAClient:
         try:
             response = self._session.get(url)
             response.raise_for_status()
-        except HTTPError as e:
-            print(
-                "HTTP error occurred:"
-                f"\n{e}"
-            )
-            return {}
 
-        return response.json()
+            return response.json()
+        except HTTPError:
+            raise
