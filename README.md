@@ -196,11 +196,19 @@ via PIP or installed manually
 via the release downloads on
 GitHub!
 
-Due to a conflict with
-an apparent non-existent package on
-PyPI, the installation name is
-*slightly* different than the one
-used for everything else.
+The package can also be
+viewed on PyPI by clicking
+[**This link**](https://pypi.org/project/pyspaceapis)!
+
+> [!NOTE]
+> 
+> Due to a conflict with
+> an apparent non-existent package on
+> PyPI, the installation name is
+> *slightly* different than the one
+> used for everything else. Please
+> be sure to correctly install
+> 'pyspaceapis'.
 
 PIP Install:
 ```
