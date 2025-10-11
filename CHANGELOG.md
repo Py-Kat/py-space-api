@@ -11,6 +11,7 @@
 - Added support for all NASA
 EONET endpoints
 
+
 - Rephrased some text and fixed
 typos in docstrings
 
@@ -26,6 +27,43 @@ from HTTP Error messages
 - Removed the 'time this' decorator
 from class methods by default
 
+
 - Moved the 'time this' decorator
-into it's own importable 'debugtools'
+into its own importable 'debugtools'
 module
+
+
+## 0.4.0 - 2025-10-11
+
+- Made errors now raise tracebacks
+instead of simply printing an
+error message with an empty
+dict
+
+
+- Added missing documentation of NASA
+EONET endpoints to the README
+
+
+- Changed the API request example
+in the README as well
+as correcting the structure of
+the text and other smaller
+adjustments to the README
+
+
+- Added more documentation to the
+README about all endpoints
+
+
+- Added links to specific methods
+in the GitHub repository to
+the README for more clarification
+
+
+- Added missing quotations to text
+sourced from NASA web pages
+
+
+- Slightly improved the contents of
+some docstrings
