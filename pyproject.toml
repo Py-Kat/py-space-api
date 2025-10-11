@@ -23,4 +23,4 @@ classifiers = [
 ]
 
 [project.urls]
-repository = "https://github.com/Py-Kat/py-space-api"
+Repository = "https://github.com/Py-Kat/py-space-api"
