@@ -191,30 +191,27 @@ web service-enabled image sources (e.g., via WMS, WMTS, etc.)."
 
 ## | Installing The Package:
 
-> [!NOTE]
-> 
-> As of now, this project
-> is NOT on PyPI, but
-> it will be very soon
-> once the necessary implementations are
-> made! Until then, I plan
-> to make releases available which
-> include the tar.gz and .whl
-> files for direct installation! (will
-> probably continue to do this
-> alongside PyPI updates.)
-> 
-> ### the FUTURE simplified install method:
-> **(Not yet implemented)**
-> 
-> ```
-> shell
-> 
-> pip install pyspaceapi
-> ```
->
-> Dependencies can be viewed on
-> [**Line #8 in 'pyproject.toml'**](pyproject.toml).
+This package can be installed
+via PIP or installed manually
+via the release downloads on
+GitHub!
+
+PIP Install:
+```
+shell
+
+pip install pyspaceapi
+```
+
+Manual Install:
+```
+shell
+
+pip install "PATH\TO\pyspaceapi-0.4.0-py3-none-any.whl"
+```
+
+Dependencies can be viewed on
+[**Line #8 in 'pyproject.toml'**](pyproject.toml).
 
 ## | Using The Package:
 
