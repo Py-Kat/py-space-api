@@ -196,6 +196,10 @@ via PIP or installed manually
 via the release downloads on
 GitHub!
 
+As well, the package can
+be viewed on PyPI directly
+by clicking [**this link**](https://pypi.org/project/pyspaceapis)!
+
 > [!NOTE]
 > 
 > Due to a conflict with
