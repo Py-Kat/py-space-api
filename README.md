@@ -1,4 +1,4 @@
-# | PySpaceAPI Wrapper! 🚀
+# 📡 | PySpaceAPI Wrapper!
 
 PySpaceAPI is a fairly thin
 (for now at least) API
@@ -27,7 +27,7 @@ future!
 
 ## | Currently Supported Endpoints:
 
-> [!NOTE]
+> ### 💡
 > 
 > *Most explanations and in-depth documentation
 > seen here are provided by 
@@ -192,40 +192,61 @@ web service-enabled image sources (e.g., via WMS, WMTS, etc.)."
 ## | Installing The Package:
 
 This package can be installed
-via PIP or installed manually
-via the release downloads on
-GitHub!
+directly from PyPI, or installed
+manually via the .tar.gz or
+.whl files!
 
-As well, the package can
-be viewed on PyPI directly
-by clicking [**this link**](https://pypi.org/project/pyspaceapis)!
+As well, dependencies can be
+viewed on [**Line #8 in
+'pyproject.toml'**](pyproject.toml).
 
-> [!NOTE]
+The PyPI project can also
+be viewed by clicking this
+link: https://pypi.org/project/pyspaceapis
+
+> ### ❗
 > 
 > Due to a conflict with
 > an apparent non-existent package on
-> PyPI, the installation name is
-> *slightly* different than the one
-> used for everything else. Please
-> be sure to correctly install
-> 'pyspaceapis'.
+> PyPI, the name used for
+> installation is *slightly* different than
+> the one used when importing.
+> Please be sure to correctly
+> install 'pyspaceapis'. The exact commands
+> for installation can be copied
+> below!
 
-PIP Install:
+### Default Installation Method:
+
 ```
 shell
 
 pip install pyspaceapis
 ```
 
-Manual Install:
+---
+
+### Manual Installation Methods:
+
+Using the .whl:
 ```
 shell
 
 pip install "PATH\TO\pyspaceapis-0.4.0-py3-none-any.whl"
 ```
 
-Dependencies can be viewed on
-[**Line #8 in 'pyproject.toml'**](pyproject.toml).
+Using the .tar.gz:
+```
+shell
+
+pip install "PATH\TO\pyspaceapis-0.4.0.tar.gz"
+```
+
+*The .tar.gz and .whl files
+will be made available as
+well alongside each release for
+those who prefer a manual
+installation!*
 
 ## | Using The Package:
 
