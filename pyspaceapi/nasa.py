@@ -4,7 +4,15 @@ from requests.exceptions import HTTPError, ReadTimeout, ConnectTimeout
 
 class NASAClient:
 
-    def __init__(self, api_key: str = "DEMO_KEY", default_retry_delays: list[float] | None = None, timeout_print: bool = False):
+    # APOD, NeoWs, and DONKI Base Url
+    _base_nasa_url = "https://api.nasa.gov"
+    # EONET Base Url
+    _base_eonet_url = "https://eonet.gsfc.nasa.gov/api/v3"
+
+    def __init__(self,
+                 api_key: str | None = "DEMO_KEY",
+                 default_retry_delays: list[float] | None = None,
+                 timeout_print: bool = False):
         """
         This is where you enter your NASA API key
         for handling requests made to the NASA API. If
@@ -40,15 +48,8 @@ class NASAClient:
             This defaults to False.
         """
 
-        self._api_key = api_key
         self._session = requests.Session()
-
-        # APOD, NeoWs, and DONKI Base Url
-        self._base_nasa_url = "https://api.nasa.gov"
-
-        # EONET Base Url
-        self._base_eonet_url = "https://eonet.gsfc.nasa.gov/api/v3"
-
+        self._api_key = api_key
 
         # Default Timeout Retry Delays
         self._default_retry_delays = default_retry_delays or [15, 30, 45]
