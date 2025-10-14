@@ -1,10 +1,10 @@
 import requests
-from requests.exceptions import HTTPError
+from requests.exceptions import HTTPError, ReadTimeout, ConnectTimeout
 
 
 class NASAClient:
 
-    def __init__(self, api_key: str = "DEMO_KEY"):
+    def __init__(self, api_key: str = "DEMO_KEY", default_retry_delays: list[float] | None = None, timeout_print: bool = False):
         """
         This is where you enter your NASA API key
         for handling requests made to the NASA API. If
@@ -14,9 +14,30 @@ class NASAClient:
         Having your own NASA API key will increase the limit
         of requests to 1000 requests per hour!
 
+        This is also where you can set the 'default_retry_delays' parameter
+        for modifying the values of all request timeouts at once if needed.
+        These can be further tweaked by using the 'retry_delays' parameter
+        within each class method to control the retry delays between specific
+        class methods! You can also enable the 'timeout_print' parameter,
+        which will toggle on debug prints when timeouts occur if set to True!
+
         :param api_key: Your NASA API key.
             This defaults to the DEMO_KEY.
             (DEMO_KEY is limited to 30 requests per hour!)
+
+        :param default_retry_delays: This parameter can be specified
+            with a list of floats/integers to override the DEFAULT retry delays
+            in which will be attempted when a timeout occurs. (This is if none are
+            specified within a class method parameter itself. e.g. the list [5, 10, 15] will
+            cause the wrapper to try three times, once for five seconds, once again for
+            ten seconds, etc.) Specifying this does NOT override separate retry delays
+            set within class method parameters via the 'retry_delays' parameter.
+            This defaults to [15, 30, 45]
+
+        :param timeout_print: If this parameter is set to True, timeout
+            debug prints will be made visible! (e.g. '(Request timed out
+            after 15 seconds. Retrying for 30 seconds.)')
+            This defaults to False.
         """
 
         self._api_key = api_key
@@ -28,13 +49,24 @@ class NASAClient:
         # EONET Base Url
         self._base_eonet_url = "https://eonet.gsfc.nasa.gov/api/v3"
 
+
+        # Default Timeout Retry Delays
+        self._default_retry_delays = default_retry_delays or [15, 30, 45]
+
+        # Timeout Print
+        if timeout_print:
+            self._timeout_print = "(Request timed out after {previous_delay} seconds. Retrying for {delay} seconds.)\n"
+        if not timeout_print:
+            self._timeout_print = ""
+
     # Astronomy Picture of the Day API ( APOD )
     def apod(self,
              date: str | None = None,
              start_date: str | None = None,
              end_date: str | None = None,
              count: int | None = None,
-             thumbs: bool | None = None) -> dict:
+             thumbs: bool | None = None,
+             retry_delays: list[float] | None = None) -> dict:
         """
         "This endpoint structures the APOD
         imagery and associated metadata so
@@ -68,6 +100,15 @@ class NASAClient:
         :param thumbs: "Return the URL of a video thumbnail.
             If an APOD is not a video, this parameter is ignored."
             This defaults to False.
+
+        :param retry_delays: This parameter can be specified
+            with a list of floats/integers to override the DEFAULT timeout
+            retry delays in which will be attempted if a timeout occurs.
+            This will also override the main 'default_retry_delays'
+            parameter if specified as well, allowing for further customization
+            between API requests! (e.g. the list [5, 10, 15] will cause the
+            wrapper to try three times, once for five seconds, once again for
+            ten seconds, etc.) This defaults to [15, 30, 45]
         """
 
         url = f"{self._base_nasa_url}/planetary/apod"
@@ -84,18 +125,47 @@ class NASAClient:
         if thumbs:
             params["thumbs"] = str(thumbs)
 
-        try:
-            response = self._session.get(url, params=params)
-            response.raise_for_status()
+        timing_out = False
+        previous_delay = None
+        timeout_error = None
 
-            return response.json()
-        except HTTPError:
-            raise
+        for delay in retry_delays or self._default_retry_delays:
+            if timing_out:
+                print(
+                    self._timeout_print.format(previous_delay=previous_delay, delay=delay)
+                )
+
+            try:
+                response = self._session.get(url, params=params, timeout=delay)
+                response.raise_for_status()
+
+                return response.json()
+
+            except (ConnectTimeout,
+                    ReadTimeout) as e:
+                timing_out = True
+                previous_delay = delay
+
+                if ConnectTimeout:
+                    timeout_error = ConnectTimeout(
+                        f"{e}"
+                    )
+                if ReadTimeout:
+                    timeout_error = ReadTimeout(
+                        f"{e}"
+                    )
+
+            except HTTPError:
+                raise
+
+        else:
+            raise timeout_error
 
     # Near Earth Object Web Service ( NeoWs )
     def neows_feed(self,
-                 start_date: str | None = None,
-                 end_date: str | None = None) -> dict:
+                   start_date: str | None = None,
+                   end_date: str | None = None,
+                   retry_delays: list[float] | None = None) -> dict:
         """
         "Retrieve a list of Asteroids based on their closest approach date to Earth!"
 
@@ -106,6 +176,15 @@ class NASAClient:
 
         :param end_date: Ending date for the asteroid search.
             This defaults to 7 days after start_date.
+
+        :param retry_delays: This parameter can be specified
+            with a list of floats/integers to override the DEFAULT timeout
+            retry delays in which will be attempted if a timeout occurs.
+            This will also override the main 'default_retry_delays'
+            parameter if specified as well, allowing for further customization
+            between API requests! (e.g. the list [5, 10, 15] will cause the
+            wrapper to try three times, once for five seconds, once again for
+            ten seconds, etc.) This defaults to [15, 30, 45]
         """
 
         url = f"{self._base_nasa_url}/neo/rest/v1/feed"
@@ -116,55 +195,160 @@ class NASAClient:
         if end_date:
             params["end_date"] = end_date
 
-        try:
-            response = self._session.get(url, params=params)
-            response.raise_for_status()
+        timing_out = False
+        previous_delay = None
+        timeout_error = None
 
-            return response.json()
-        except HTTPError:
-            raise
+        for delay in retry_delays or self._default_retry_delays:
+            if timing_out:
+                print(
+                    self._timeout_print.format(previous_delay=previous_delay, delay=delay)
+                )
+
+            try:
+                response = self._session.get(url, params=params, timeout=delay)
+                response.raise_for_status()
+
+                return response.json()
+
+            except (ConnectTimeout,
+                    ReadTimeout) as e:
+                timing_out = True
+                previous_delay = delay
+
+                if ConnectTimeout:
+                    timeout_error = ConnectTimeout(
+                        f"{e}"
+                    )
+                if ReadTimeout:
+                    timeout_error = ReadTimeout(
+                        f"{e}"
+                    )
+
+            except HTTPError:
+                raise
+
+        else:
+            raise timeout_error
 
     def neows_lookup(self,
-                     asteroid_id: int) -> dict:
+                     asteroid_id: int,
+                     retry_delays: list[float] | None = None) -> dict:
         """
         "Lookup a specific asteroid based on its NASA JPL small body (SPK-ID) ID!"
 
         Small-Body Database Queries: https://ssd.jpl.nasa.gov/tools/sbdb_query.html
 
         :param asteroid_id: Asteroid SPK-ID correlates to the NASA JPL small body.
+
+        :param retry_delays: This parameter can be specified
+            with a list of floats/integers to override the DEFAULT timeout
+            retry delays in which will be attempted if a timeout occurs.
+            This will also override the main 'default_retry_delays'
+            parameter if specified as well, allowing for further customization
+            between API requests! (e.g. the list [5, 10, 15] will cause the
+            wrapper to try three times, once for five seconds, once again for
+            ten seconds, etc.) This defaults to [15, 30, 45]
         """
 
         url = f"{self._base_nasa_url}/neo/rest/v1/neo/{asteroid_id}"
         params = {"api_key": self._api_key}
 
-        try:
-            response = self._session.get(url, params=params)
-            response.raise_for_status()
+        timing_out = False
+        previous_delay = None
+        timeout_error = None
 
-            return response.json()
-        except HTTPError:
-            raise
+        for delay in retry_delays or self._default_retry_delays:
+            if timing_out:
+                print(
+                    self._timeout_print.format(previous_delay=previous_delay, delay=delay)
+                )
 
-    def neows_browse(self) -> dict:
+            try:
+                response = self._session.get(url, params=params, timeout=delay)
+                response.raise_for_status()
+
+                return response.json()
+
+            except (ConnectTimeout,
+                    ReadTimeout) as e:
+                timing_out = True
+                previous_delay = delay
+
+                if ConnectTimeout:
+                    timeout_error = ConnectTimeout(
+                        f"{e}"
+                    )
+                if ReadTimeout:
+                    timeout_error = ReadTimeout(
+                        f"{e}"
+                    )
+
+            except HTTPError:
+                raise
+
+        else:
+            raise timeout_error
+
+    def neows_browse(self,
+                     retry_delays: list[float] | None = None) -> dict:
         """
         "Browse the overall Asteroid data-set!"
+
+        :param retry_delays: This parameter can be specified
+            with a list of floats/integers to override the DEFAULT timeout
+            retry delays in which will be attempted if a timeout occurs.
+            This will also override the main 'default_retry_delays'
+            parameter if specified as well, allowing for further customization
+            between API requests! (e.g. the list [5, 10, 15] will cause the
+            wrapper to try three times, once for five seconds, once again for
+            ten seconds, etc.) This defaults to [15, 30, 45]
         """
 
         url = f"{self._base_nasa_url}/neo/rest/v1/neo/browse"
         params = {"api_key": self._api_key}
 
-        try:
-            response = self._session.get(url, params=params)
-            response.raise_for_status()
+        timing_out = False
+        previous_delay = None
+        timeout_error = None
 
-            return response.json()
-        except HTTPError:
-            raise
+        for delay in retry_delays or self._default_retry_delays:
+            if timing_out:
+                print(
+                    self._timeout_print.format(previous_delay=previous_delay, delay=delay)
+                )
+
+            try:
+                response = self._session.get(url, params=params, timeout=delay)
+                response.raise_for_status()
+
+                return response.json()
+
+            except (ConnectTimeout,
+                    ReadTimeout) as e:
+                timing_out = True
+                previous_delay = delay
+
+                if ConnectTimeout:
+                    timeout_error = ConnectTimeout(
+                        f"{e}"
+                    )
+                if ReadTimeout:
+                    timeout_error = ReadTimeout(
+                        f"{e}"
+                    )
+
+            except HTTPError:
+                raise
+
+        else:
+            raise timeout_error
 
     # Space Weather Database Of Notifications, Knowledge, Information ( DONKI )
     def donki_cme(self,
                   start_date: str | None = None,
-                  end_date: str | None = None) -> dict:
+                  end_date: str | None = None,
+                  retry_delays: list[float] | None = None) -> dict:
         """
         Retrieves basic DONKI Coronal Mass Injection analyses (CMEs)
         within a specific time frame!
@@ -176,6 +360,15 @@ class NASAClient:
 
         :param end_date: The ending date for the CME search.
             This defaults to the current UTC date.
+
+        :param retry_delays: This parameter can be specified
+            with a list of floats/integers to override the DEFAULT timeout
+            retry delays in which will be attempted if a timeout occurs.
+            This will also override the main 'default_retry_delays'
+            parameter if specified as well, allowing for further customization
+            between API requests! (e.g. the list [5, 10, 15] will cause the
+            wrapper to try three times, once for five seconds, once again for
+            ten seconds, etc.) This defaults to [15, 30, 45]
         """
 
         url = f"{self._base_nasa_url}/DONKI/CME"
@@ -186,13 +379,41 @@ class NASAClient:
         if end_date:
             params["endDate"] = end_date
 
-        try:
-            response = self._session.get(url, params=params)
-            response.raise_for_status()
+        timing_out = False
+        previous_delay = None
+        timeout_error = None
 
-            return response.json()
-        except HTTPError:
-            raise
+        for delay in retry_delays or self._default_retry_delays:
+            if timing_out:
+                print(
+                    self._timeout_print.format(previous_delay=previous_delay, delay=delay)
+                )
+
+            try:
+                response = self._session.get(url, params=params, timeout=delay)
+                response.raise_for_status()
+
+                return response.json()
+
+            except (ConnectTimeout,
+                    ReadTimeout) as e:
+                timing_out = True
+                previous_delay = delay
+
+                if ConnectTimeout:
+                    timeout_error = ConnectTimeout(
+                        f"{e}"
+                    )
+                if ReadTimeout:
+                    timeout_error = ReadTimeout(
+                        f"{e}"
+                    )
+
+            except HTTPError:
+                raise
+
+        else:
+            raise timeout_error
 
     def donki_cme_analysis(self,
                            start_date: str | None = None,
@@ -202,7 +423,8 @@ class NASAClient:
                            speed: int = 0,
                            half_angle: int = 0,
                            catalog: str | None = None,
-                           keyword: str | None = None) -> dict:
+                           keyword: str | None = None,
+                           retry_delays: list[float] | None = None) -> dict:
         """
         Retrieves more robust analyses from DONKI Coronal Mass Injections (CMEs)
         within a specific time frame, accuracy, catalog, and/or keyword!
@@ -236,6 +458,15 @@ class NASAClient:
 
         :param keyword: Filter CME results by specific subsets with a keyword.
             This defaults to None.
+
+        :param retry_delays: This parameter can be specified
+            with a list of floats/integers to override the DEFAULT timeout
+            retry delays in which will be attempted if a timeout occurs.
+            This will also override the main 'default_retry_delays'
+            parameter if specified as well, allowing for further customization
+            between API requests! (e.g. the list [5, 10, 15] will cause the
+            wrapper to try three times, once for five seconds, once again for
+            ten seconds, etc.) This defaults to [15, 30, 45]
         """
 
         url = f"{self._base_nasa_url}/DONKI/CMEAnalysis"
@@ -258,17 +489,46 @@ class NASAClient:
         if keyword:
             params["keyword"] = keyword
 
-        try:
-            response = self._session.get(url, params=params)
-            response.raise_for_status()
+        timing_out = False
+        previous_delay = None
+        timeout_error = None
 
-            return response.json()
-        except HTTPError:
-            raise
+        for delay in retry_delays or self._default_retry_delays:
+            if timing_out:
+                print(
+                    self._timeout_print.format(previous_delay=previous_delay, delay=delay)
+                )
+
+            try:
+                response = self._session.get(url, params=params, timeout=delay)
+                response.raise_for_status()
+
+                return response.json()
+
+            except (ConnectTimeout,
+                    ReadTimeout) as e:
+                timing_out = True
+                previous_delay = delay
+
+                if ConnectTimeout:
+                    timeout_error = ConnectTimeout(
+                        f"{e}"
+                    )
+                if ReadTimeout:
+                    timeout_error = ReadTimeout(
+                        f"{e}"
+                    )
+
+            except HTTPError:
+                raise
+
+        else:
+            raise timeout_error
 
     def donki_gst(self,
                   start_date: str | None = None,
-                  end_date: str | None = None) -> dict:
+                  end_date: str | None = None,
+                  retry_delays: list[float] | None = None) -> dict:
         """
         Retrieves DONKI Geomagnetic Storm analyses (GSTs)
         within a specific time frame!
@@ -280,6 +540,15 @@ class NASAClient:
 
         :param end_date: The ending date for the GST search.
             This defaults to the current UTC date.
+
+        :param retry_delays: This parameter can be specified
+            with a list of floats/integers to override the DEFAULT timeout
+            retry delays in which will be attempted if a timeout occurs.
+            This will also override the main 'default_retry_delays'
+            parameter if specified as well, allowing for further customization
+            between API requests! (e.g. the list [5, 10, 15] will cause the
+            wrapper to try three times, once for five seconds, once again for
+            ten seconds, etc.) This defaults to [15, 30, 45]
         """
 
         url = f"{self._base_nasa_url}/DONKI/GST"
@@ -290,19 +559,48 @@ class NASAClient:
         if end_date:
             params["endDate"] = end_date
 
-        try:
-            response = self._session.get(url, params=params)
-            response.raise_for_status()
+        timing_out = False
+        previous_delay = None
+        timeout_error = None
 
-            return response.json()
-        except HTTPError:
-            raise
+        for delay in retry_delays or self._default_retry_delays:
+            if timing_out:
+                print(
+                    self._timeout_print.format(previous_delay=previous_delay, delay=delay)
+                )
+
+            try:
+                response = self._session.get(url, params=params, timeout=delay)
+                response.raise_for_status()
+
+                return response.json()
+
+            except (ConnectTimeout,
+                    ReadTimeout) as e:
+                timing_out = True
+                previous_delay = delay
+
+                if ConnectTimeout:
+                    timeout_error = ConnectTimeout(
+                        f"{e}"
+                    )
+                if ReadTimeout:
+                    timeout_error = ReadTimeout(
+                        f"{e}"
+                    )
+
+            except HTTPError:
+                raise
+
+        else:
+            raise timeout_error
 
     def donki_ips(self,
                   start_date: str | None = None,
                   end_date: str | None = None,
                   location: str | None = None,
-                  catalog: str | None = None) -> dict:
+                  catalog: str | None = None,
+                  retry_delays: list[float] | None = None) -> dict:
         """
         Retrieves DONKI Interplanetary Shock analyses (IPSs)
         within a specific time frame, location, and/or catalog!
@@ -322,6 +620,15 @@ class NASAClient:
         :param catalog: The catalog from which to retrieve IPS analyses.
             This defaults to ALL catalogs.
             (Options: SWRC_CATALOG, WINSLOW_MESSENGER_ICME_CATALOG)
+
+        :param retry_delays: This parameter can be specified
+            with a list of floats/integers to override the DEFAULT timeout
+            retry delays in which will be attempted if a timeout occurs.
+            This will also override the main 'default_retry_delays'
+            parameter if specified as well, allowing for further customization
+            between API requests! (e.g. the list [5, 10, 15] will cause the
+            wrapper to try three times, once for five seconds, once again for
+            ten seconds, etc.) This defaults to [15, 30, 45]
         """
 
         url = f"{self._base_nasa_url}/DONKI/IPS"
@@ -336,17 +643,46 @@ class NASAClient:
         if catalog:
             params["catalog"] = catalog
 
-        try:
-            response = self._session.get(url, params=params)
-            response.raise_for_status()
+        timing_out = False
+        previous_delay = None
+        timeout_error = None
 
-            return response.json()
-        except HTTPError:
-            raise
+        for delay in retry_delays or self._default_retry_delays:
+            if timing_out:
+                print(
+                    self._timeout_print.format(previous_delay=previous_delay, delay=delay)
+                )
+
+            try:
+                response = self._session.get(url, params=params, timeout=delay)
+                response.raise_for_status()
+
+                return response.json()
+
+            except (ConnectTimeout,
+                    ReadTimeout) as e:
+                timing_out = True
+                previous_delay = delay
+
+                if ConnectTimeout:
+                    timeout_error = ConnectTimeout(
+                        f"{e}"
+                    )
+                if ReadTimeout:
+                    timeout_error = ReadTimeout(
+                        f"{e}"
+                    )
+
+            except HTTPError:
+                raise
+
+        else:
+            raise timeout_error
 
     def donki_flr(self,
                   start_date: str | None = None,
-                  end_date: str | None = None) -> dict:
+                  end_date: str | None = None,
+                  retry_delays: list[float] | None = None) -> dict:
         """
         Retrieves DONKI Solar Flare analyses (FLRs)
         within a specific time frame!
@@ -358,6 +694,15 @@ class NASAClient:
 
         :param end_date: The ending date for the FLR search.
             This defaults to the current UTC date.
+
+        :param retry_delays: This parameter can be specified
+            with a list of floats/integers to override the DEFAULT timeout
+            retry delays in which will be attempted if a timeout occurs.
+            This will also override the main 'default_retry_delays'
+            parameter if specified as well, allowing for further customization
+            between API requests! (e.g. the list [5, 10, 15] will cause the
+            wrapper to try three times, once for five seconds, once again for
+            ten seconds, etc.) This defaults to [15, 30, 45]
         """
 
         url = f"{self._base_nasa_url}/DONKI/FLR"
@@ -368,17 +713,46 @@ class NASAClient:
         if end_date:
             params["endDate"] = end_date
 
-        try:
-            response = self._session.get(url, params=params)
-            response.raise_for_status()
+        timing_out = False
+        previous_delay = None
+        timeout_error = None
 
-            return response.json()
-        except HTTPError:
-            raise
+        for delay in retry_delays or self._default_retry_delays:
+            if timing_out:
+                print(
+                    self._timeout_print.format(previous_delay=previous_delay, delay=delay)
+                )
+
+            try:
+                response = self._session.get(url, params=params, timeout=delay)
+                response.raise_for_status()
+
+                return response.json()
+
+            except (ConnectTimeout,
+                    ReadTimeout) as e:
+                timing_out = True
+                previous_delay = delay
+
+                if ConnectTimeout:
+                    timeout_error = ConnectTimeout(
+                        f"{e}"
+                    )
+                if ReadTimeout:
+                    timeout_error = ReadTimeout(
+                        f"{e}"
+                    )
+
+            except HTTPError:
+                raise
+
+        else:
+            raise timeout_error
 
     def donki_sep(self,
                   start_date: str | None = None,
-                  end_date: str | None = None) -> dict:
+                  end_date: str | None = None,
+                  retry_delays: list[float] | None = None) -> dict:
         """
         Retrieves DONKI Solar Energetic Particle analyses (SEP)
         within a specific time frame!
@@ -390,6 +764,15 @@ class NASAClient:
 
         :param end_date: The ending date for the SEP search.
             This defaults to the current UTC date.
+
+        :param retry_delays: This parameter can be specified
+            with a list of floats/integers to override the DEFAULT timeout
+            retry delays in which will be attempted if a timeout occurs.
+            This will also override the main 'default_retry_delays'
+            parameter if specified as well, allowing for further customization
+            between API requests! (e.g. the list [5, 10, 15] will cause the
+            wrapper to try three times, once for five seconds, once again for
+            ten seconds, etc.) This defaults to [15, 30, 45]
         """
 
         url = f"{self._base_nasa_url}/DONKI/SEP"
@@ -400,17 +783,46 @@ class NASAClient:
         if end_date:
             params["endDate"] = end_date
 
-        try:
-            response = self._session.get(url, params=params)
-            response.raise_for_status()
+        timing_out = False
+        previous_delay = None
+        timeout_error = None
 
-            return response.json()
-        except HTTPError:
-            raise
+        for delay in retry_delays or self._default_retry_delays:
+            if timing_out:
+                print(
+                    self._timeout_print.format(previous_delay=previous_delay, delay=delay)
+                )
+
+            try:
+                response = self._session.get(url, params=params, timeout=delay)
+                response.raise_for_status()
+
+                return response.json()
+
+            except (ConnectTimeout,
+                    ReadTimeout) as e:
+                timing_out = True
+                previous_delay = delay
+
+                if ConnectTimeout:
+                    timeout_error = ConnectTimeout(
+                        f"{e}"
+                    )
+                if ReadTimeout:
+                    timeout_error = ReadTimeout(
+                        f"{e}"
+                    )
+
+            except HTTPError:
+                raise
+
+        else:
+            raise timeout_error
 
     def donki_mpc(self,
                   start_date: str | None = None,
-                  end_date: str | None = None) -> dict:
+                  end_date: str | None = None,
+                  retry_delays: list[float] | None = None) -> dict:
         """
         Retrieves DONKI Magnetopause Crossing analyses (MPC)
         within a specific time frame!
@@ -422,6 +834,15 @@ class NASAClient:
 
         :param end_date: The ending date for the MPC search.
             This defaults to the current UTC date.
+
+        :param retry_delays: This parameter can be specified
+            with a list of floats/integers to override the DEFAULT timeout
+            retry delays in which will be attempted if a timeout occurs.
+            This will also override the main 'default_retry_delays'
+            parameter if specified as well, allowing for further customization
+            between API requests! (e.g. the list [5, 10, 15] will cause the
+            wrapper to try three times, once for five seconds, once again for
+            ten seconds, etc.) This defaults to [15, 30, 45]
         """
 
         url = f"{self._base_nasa_url}/DONKI/MPC"
@@ -432,17 +853,46 @@ class NASAClient:
         if end_date:
             params["endDate"] = end_date
 
-        try:
-            response = self._session.get(url, params=params)
-            response.raise_for_status()
+        timing_out = False
+        previous_delay = None
+        timeout_error = None
 
-            return response.json()
-        except HTTPError:
-            raise
+        for delay in retry_delays or self._default_retry_delays:
+            if timing_out:
+                print(
+                    self._timeout_print.format(previous_delay=previous_delay, delay=delay)
+                )
+
+            try:
+                response = self._session.get(url, params=params, timeout=delay)
+                response.raise_for_status()
+
+                return response.json()
+
+            except (ConnectTimeout,
+                    ReadTimeout) as e:
+                timing_out = True
+                previous_delay = delay
+
+                if ConnectTimeout:
+                    timeout_error = ConnectTimeout(
+                        f"{e}"
+                    )
+                if ReadTimeout:
+                    timeout_error = ReadTimeout(
+                        f"{e}"
+                    )
+
+            except HTTPError:
+                raise
+
+        else:
+            raise timeout_error
 
     def donki_rbe(self,
                   start_date: str | None = None,
-                  end_date: str | None = None) -> dict:
+                  end_date: str | None = None,
+                  retry_delays: list[float] | None = None) -> dict:
         """
         Retrieves DONKI Radiation Belt Enhancement analyses (RBE)
         within a specific time frame!
@@ -454,6 +904,15 @@ class NASAClient:
 
         :param end_date: The ending date for the RBE search.
             This defaults to the current UTC date.
+
+        :param retry_delays: This parameter can be specified
+            with a list of floats/integers to override the DEFAULT timeout
+            retry delays in which will be attempted if a timeout occurs.
+            This will also override the main 'default_retry_delays'
+            parameter if specified as well, allowing for further customization
+            between API requests! (e.g. the list [5, 10, 15] will cause the
+            wrapper to try three times, once for five seconds, once again for
+            ten seconds, etc.) This defaults to [15, 30, 45]
         """
 
         url = f"{self._base_nasa_url}/DONKI/RBE"
@@ -464,17 +923,46 @@ class NASAClient:
         if end_date:
             params["endDate"] = end_date
 
-        try:
-            response = self._session.get(url, params=params)
-            response.raise_for_status()
+        timing_out = False
+        previous_delay = None
+        timeout_error = None
 
-            return response.json()
-        except HTTPError:
-            raise
+        for delay in retry_delays or self._default_retry_delays:
+            if timing_out:
+                print(
+                    self._timeout_print.format(previous_delay=previous_delay, delay=delay)
+                )
+
+            try:
+                response = self._session.get(url, params=params, timeout=delay)
+                response.raise_for_status()
+
+                return response.json()
+
+            except (ConnectTimeout,
+                    ReadTimeout) as e:
+                timing_out = True
+                previous_delay = delay
+
+                if ConnectTimeout:
+                    timeout_error = ConnectTimeout(
+                        f"{e}"
+                    )
+                if ReadTimeout:
+                    timeout_error = ReadTimeout(
+                        f"{e}"
+                    )
+
+            except HTTPError:
+                raise
+
+        else:
+            raise timeout_error
 
     def donki_hss(self,
                   start_date: str | None = None,
-                  end_date: str | None = None) -> dict:
+                  end_date: str | None = None,
+                  retry_delays: list[float] | None = None) -> dict:
         """
         Retrieves DONKI Hight Speed Stream analyses (HSS)
         within a specific time frame!
@@ -486,6 +974,15 @@ class NASAClient:
 
         :param end_date: The ending date for the HSS search.
             This defaults to the current UTC date.
+
+        :param retry_delays: This parameter can be specified
+            with a list of floats/integers to override the DEFAULT timeout
+            retry delays in which will be attempted if a timeout occurs.
+            This will also override the main 'default_retry_delays'
+            parameter if specified as well, allowing for further customization
+            between API requests! (e.g. the list [5, 10, 15] will cause the
+            wrapper to try three times, once for five seconds, once again for
+            ten seconds, etc.) This defaults to [15, 30, 45]
         """
 
         url = f"{self._base_nasa_url}/DONKI/HSS"
@@ -496,17 +993,46 @@ class NASAClient:
         if end_date:
             params["endDate"] = end_date
 
-        try:
-            response = self._session.get(url, params=params)
-            response.raise_for_status()
+        timing_out = False
+        previous_delay = None
+        timeout_error = None
 
-            return response.json()
-        except HTTPError:
-            raise
+        for delay in retry_delays or self._default_retry_delays:
+            if timing_out:
+                print(
+                    self._timeout_print.format(previous_delay=previous_delay, delay=delay)
+                )
+
+            try:
+                response = self._session.get(url, params=params, timeout=delay)
+                response.raise_for_status()
+
+                return response.json()
+
+            except (ConnectTimeout,
+                    ReadTimeout) as e:
+                timing_out = True
+                previous_delay = delay
+
+                if ConnectTimeout:
+                    timeout_error = ConnectTimeout(
+                        f"{e}"
+                    )
+                if ReadTimeout:
+                    timeout_error = ReadTimeout(
+                        f"{e}"
+                    )
+
+            except HTTPError:
+                raise
+
+        else:
+            raise timeout_error
 
     def donki_wsa_es(self,
                      start_date: str | None = None,
-                     end_date: str | None = None) -> dict:
+                     end_date: str | None = None,
+                     retry_delays: list[float] | None = None) -> dict:
         """
         Retrieves DONKI WSA+EnlilSimulation analyses
         within a specific time frame!
@@ -518,6 +1044,15 @@ class NASAClient:
 
         :param end_date: The ending date for the WSA+EnlilSimulation search.
             This defaults to the current UTC date.
+
+        :param retry_delays: This parameter can be specified
+            with a list of floats/integers to override the DEFAULT timeout
+            retry delays in which will be attempted if a timeout occurs.
+            This will also override the main 'default_retry_delays'
+            parameter if specified as well, allowing for further customization
+            between API requests! (e.g. the list [5, 10, 15] will cause the
+            wrapper to try three times, once for five seconds, once again for
+            ten seconds, etc.) This defaults to [15, 30, 45]
         """
 
         url = f"{self._base_nasa_url}/DONKI/WSAEnlilSimulations"
@@ -528,18 +1063,47 @@ class NASAClient:
         if end_date:
             params["endDate"] = end_date
 
-        try:
-            response = self._session.get(url, params=params)
-            response.raise_for_status()
+        timing_out = False
+        previous_delay = None
+        timeout_error = None
 
-            return response.json()
-        except HTTPError:
-            raise
+        for delay in retry_delays or self._default_retry_delays:
+            if timing_out:
+                print(
+                    self._timeout_print.format(previous_delay=previous_delay, delay=delay)
+                )
+
+            try:
+                response = self._session.get(url, params=params, timeout=delay)
+                response.raise_for_status()
+
+                return response.json()
+
+            except (ConnectTimeout,
+                    ReadTimeout) as e:
+                timing_out = True
+                previous_delay = delay
+
+                if ConnectTimeout:
+                    timeout_error = ConnectTimeout(
+                        f"{e}"
+                    )
+                if ReadTimeout:
+                    timeout_error = ReadTimeout(
+                        f"{e}"
+                    )
+
+            except HTTPError:
+                raise
+
+        else:
+            raise timeout_error
 
     def donki_notifications(self,
                             start_date: str | None = None,
                             end_date: str | None = None,
-                            notification_type: str | None = None) -> dict:
+                            notification_type: str | None = None,
+                            retry_delays: list[float] | None = None) -> dict:
         """
         Retrieve DONKI Notifications within a specific time frame
         and/or a notification type!
@@ -555,6 +1119,15 @@ class NASAClient:
         :param notification_type: The notification type to retrieve.
             This defaults to ALL notification types.
             (Options: FLR, SEP, CME, IPS, MPC, GST, RBE, report)
+
+        :param retry_delays: This parameter can be specified
+            with a list of floats/integers to override the DEFAULT timeout
+            retry delays in which will be attempted if a timeout occurs.
+            This will also override the main 'default_retry_delays'
+            parameter if specified as well, allowing for further customization
+            between API requests! (e.g. the list [5, 10, 15] will cause the
+            wrapper to try three times, once for five seconds, once again for
+            ten seconds, etc.) This defaults to [15, 30, 45]
         """
 
         url = f"{self._base_nasa_url}/DONKI/notifications"
@@ -567,13 +1140,41 @@ class NASAClient:
         if notification_type:
             params["type"] = notification_type
 
-        try:
-            response = self._session.get(url, params=params)
-            response.raise_for_status()
+        timing_out = False
+        previous_delay = None
+        timeout_error = None
 
-            return response.json()
-        except HTTPError:
-            raise
+        for delay in retry_delays or self._default_retry_delays:
+            if timing_out:
+                print(
+                    self._timeout_print.format(previous_delay=previous_delay, delay=delay)
+                )
+
+            try:
+                response = self._session.get(url, params=params, timeout=delay)
+                response.raise_for_status()
+
+                return response.json()
+
+            except (ConnectTimeout,
+                    ReadTimeout) as e:
+                timing_out = True
+                previous_delay = delay
+
+                if ConnectTimeout:
+                    timeout_error = ConnectTimeout(
+                        f"{e}"
+                    )
+                if ReadTimeout:
+                    timeout_error = ReadTimeout(
+                        f"{e}"
+                    )
+
+            except HTTPError:
+                raise
+
+        else:
+            raise timeout_error
 
     # The Earth Observatory Natural Event Tracker (EONET)
     def eonet_events(self,
@@ -587,7 +1188,8 @@ class NASAClient:
                      mag_id: str | None = None,
                      mag_min: float | None = None,
                      mag_max: float | None = None,
-                     bounding_box: list[float] | None = None) -> dict:
+                     bounding_box: list[float] | None = None,
+                     retry_delays: list[float] | None = None) -> dict:
         """
         Retrieve Earth Observatory Natural Event Tracker (EONET)
         events with up to eleven optional parameters. Such as: Source,
@@ -642,6 +1244,15 @@ class NASAClient:
 
         :param bounding_box: Query using a bounding box for all events with datapoints
             that fall within. This uses two pairs of coordinates: min lon, max lat, max lon, min lat.
+
+        :param retry_delays: This parameter can be specified
+            with a list of floats/integers to override the DEFAULT timeout
+            retry delays in which will be attempted if a timeout occurs.
+            This will also override the main 'default_retry_delays'
+            parameter if specified as well, allowing for further customization
+            between API requests! (e.g. the list [5, 10, 15] will cause the
+            wrapper to try three times, once for five seconds, once again for
+            ten seconds, etc.) This defaults to [15, 30, 45]
         """
 
         url = f"{self._base_eonet_url}/events"
@@ -671,26 +1282,55 @@ class NASAClient:
             values = ",".join(map(str, bounding_box))
             params["bbox"] = values
 
-        try:
-            response = self._session.get(url, params=params)
-            response.raise_for_status()
+        timing_out = False
+        previous_delay = None
+        timeout_error = None
 
-            return response.json()
-        except HTTPError:
-            raise
+        for delay in retry_delays or self._default_retry_delays:
+            if timing_out:
+                print(
+                    self._timeout_print.format(previous_delay=previous_delay, delay=delay)
+                )
+
+            try:
+                response = self._session.get(url, params=params, timeout=delay)
+                response.raise_for_status()
+
+                return response.json()
+
+            except (ConnectTimeout,
+                    ReadTimeout) as e:
+                timing_out = True
+                previous_delay = delay
+
+                if ConnectTimeout:
+                    timeout_error = ConnectTimeout(
+                        f"{e}"
+                    )
+                if ReadTimeout:
+                    timeout_error = ReadTimeout(
+                        f"{e}"
+                    )
+
+            except HTTPError:
+                raise
+
+        else:
+            raise timeout_error
 
     def eonet_events_geojson(self,
-                     source: str | None = None,
-                     category: str | None = None,
-                     status: str | None = None,
-                     limit: int | None = None,
-                     days: int | None = None,
-                     start_date: str | None = None,
-                     end_date: str | None = None,
-                     mag_id: str | None = None,
-                     mag_min: float | None = None,
-                     mag_max: float | None = None,
-                     bounding_box: list[float] | None = None) -> dict:
+                             source: str | None = None,
+                             category: str | None = None,
+                             status: str | None = None,
+                             limit: int | None = None,
+                             days: int | None = None,
+                             start_date: str | None = None,
+                             end_date: str | None = None,
+                             mag_id: str | None = None,
+                             mag_min: float | None = None,
+                             mag_max: float | None = None,
+                             bounding_box: list[float] | None = None,
+                             retry_delays: list[float] | None = None) -> dict:
         """
         Retrieve Earth Observatory Natural Event Tracker (EONET)
         GeoJSON events with up to eleven optional parameters. Such as:
@@ -745,6 +1385,15 @@ class NASAClient:
 
         :param bounding_box: Query using a bounding box for all events with datapoints
             that fall within. This uses two pairs of coordinates: min lon, max lat, max lon, min lat.
+
+        :param retry_delays: This parameter can be specified
+            with a list of floats/integers to override the DEFAULT timeout
+            retry delays in which will be attempted if a timeout occurs.
+            This will also override the main 'default_retry_delays'
+            parameter if specified as well, allowing for further customization
+            between API requests! (e.g. the list [5, 10, 15] will cause the
+            wrapper to try three times, once for five seconds, once again for
+            ten seconds, etc.) This defaults to [15, 30, 45]
         """
 
         url = f"{self._base_eonet_url}/events"
@@ -774,13 +1423,41 @@ class NASAClient:
             values = ",".join(map(str, bounding_box))
             params["bbox"] = values
 
-        try:
-            response = self._session.get(url, params=params)
-            response.raise_for_status()
+        timing_out = False
+        previous_delay = None
+        timeout_error = None
 
-            return response.json()
-        except HTTPError:
-            raise
+        for delay in retry_delays or self._default_retry_delays:
+            if timing_out:
+                print(
+                    self._timeout_print.format(previous_delay=previous_delay, delay=delay)
+                )
+
+            try:
+                response = self._session.get(url, params=params, timeout=delay)
+                response.raise_for_status()
+
+                return response.json()
+
+            except (ConnectTimeout,
+                    ReadTimeout) as e:
+                timing_out = True
+                previous_delay = delay
+
+                if ConnectTimeout:
+                    timeout_error = ConnectTimeout(
+                        f"{e}"
+                    )
+                if ReadTimeout:
+                    timeout_error = ReadTimeout(
+                        f"{e}"
+                    )
+
+            except HTTPError:
+                raise
+
+        else:
+            raise timeout_error
 
     def eonet_categories(self,
                          category: str | None = None,
@@ -789,7 +1466,8 @@ class NASAClient:
                          limit: int | None = None,
                          days: int | None = None,
                          start_date: str | None = None,
-                         end_date: str | None = None) -> dict:
+                         end_date: str | None = None,
+                         retry_delays: list[float] | None = None) -> dict:
         """
         "Categories are the types of events by which individual
         events are cataloged. Categories can be used to filter
@@ -825,6 +1503,15 @@ class NASAClient:
 
         :param end_date: The ending date for the categories to fall between.
             This defaults to None.
+
+        :param retry_delays: This parameter can be specified
+            with a list of floats/integers to override the DEFAULT timeout
+            retry delays in which will be attempted if a timeout occurs.
+            This will also override the main 'default_retry_delays'
+            parameter if specified as well, allowing for further customization
+            between API requests! (e.g. the list [5, 10, 15] will cause the
+            wrapper to try three times, once for five seconds, once again for
+            ten seconds, etc.) This defaults to [15, 30, 45]
         """
 
         url = f"{self._base_eonet_url}/categories"
@@ -845,16 +1532,45 @@ class NASAClient:
         if end_date:
             params["end"] = end_date
 
-        try:
-            response = self._session.get(url, params=params)
-            response.raise_for_status()
+        timing_out = False
+        previous_delay = None
+        timeout_error = None
 
-            return response.json()
-        except HTTPError:
-            raise
+        for delay in retry_delays or self._default_retry_delays:
+            if timing_out:
+                print(
+                    self._timeout_print.format(previous_delay=previous_delay, delay=delay)
+                )
+
+            try:
+                response = self._session.get(url, params=params, timeout=delay)
+                response.raise_for_status()
+
+                return response.json()
+
+            except (ConnectTimeout,
+                    ReadTimeout) as e:
+                timing_out = True
+                previous_delay = delay
+
+                if ConnectTimeout:
+                    timeout_error = ConnectTimeout(
+                        f"{e}"
+                    )
+                if ReadTimeout:
+                    timeout_error = ReadTimeout(
+                        f"{e}"
+                    )
+
+            except HTTPError:
+                raise
+
+        else:
+            raise timeout_error
 
     def eonet_layers(self,
-                     category: str):
+                     category: str,
+                     retry_delays: list[float] | None = None) -> dict:
         """
         "A Layer is a reference to a specific web service
         (e.g., WMS, WMTS) that can be used to produce imagery
@@ -871,14 +1587,51 @@ class NASAClient:
         :param category: "Filter the returned layers by the category.
             The acceptable categories can be accessed via the categories JSON:
             https://eonet.gsfc.nasa.gov/api/v3/categories."
+
+        :param retry_delays: This parameter can be specified
+            with a list of floats/integers to override the DEFAULT timeout
+            retry delays in which will be attempted if a timeout occurs.
+            This will also override the main 'default_retry_delays'
+            parameter if specified as well, allowing for further customization
+            between API requests! (e.g. the list [5, 10, 15] will cause the
+            wrapper to try three times, once for five seconds, once again for
+            ten seconds, etc.) This defaults to [15, 30, 45]
         """
 
         url = f"{self._base_eonet_url}/layers/{category}"
 
-        try:
-            response = self._session.get(url)
-            response.raise_for_status()
+        timing_out = False
+        previous_delay = None
+        timeout_error = None
 
-            return response.json()
-        except HTTPError:
-            raise
+        for delay in retry_delays or self._default_retry_delays:
+            if timing_out:
+                print(
+                    self._timeout_print.format(previous_delay=previous_delay, delay=delay)
+                )
+
+            try:
+                response = self._session.get(url, timeout=delay)
+                response.raise_for_status()
+
+                return response.json()
+
+            except (ConnectTimeout,
+                    ReadTimeout) as e:
+                timing_out = True
+                previous_delay = delay
+
+                if ConnectTimeout:
+                    timeout_error = ConnectTimeout(
+                        f"{e}"
+                    )
+                if ReadTimeout:
+                    timeout_error = ReadTimeout(
+                        f"{e}"
+                    )
+
+            except HTTPError:
+                raise
+
+        else:
+            raise timeout_error
