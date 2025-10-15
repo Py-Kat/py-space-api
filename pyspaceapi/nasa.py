@@ -12,7 +12,7 @@ class NASAClient:
     def __init__(self,
                  api_key: str | None = "DEMO_KEY",
                  default_retry_delays: list[float] | None = None,
-                 timeout_print: bool = False):
+                 timeout_print: bool | None = False):
         """
         This is where you enter your NASA API key
         for handling requests made to the NASA API. If
