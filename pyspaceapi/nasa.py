@@ -52,7 +52,7 @@ class NASAClient:
         self._api_key = api_key
 
         # Default Timeout Retry Delays
-        self._default_retry_delays = default_retry_delays or [15, 30, 45]
+        self._default_retry_delays = default_retry_delays or [10, 15, 30]
 
         # Timeout Print
         if timeout_print:
@@ -109,7 +109,7 @@ class NASAClient:
             parameter if specified as well, allowing for further customization
             between API requests! (e.g. the list [5, 10, 15] will cause the
             wrapper to try three times, once for five seconds, once again for
-            ten seconds, etc.) This defaults to [15, 30, 45]
+            ten seconds, etc.) This defaults to [10, 15, 30]
         """
 
         url = f"{self._base_nasa_url}/planetary/apod"
@@ -185,7 +185,7 @@ class NASAClient:
             parameter if specified as well, allowing for further customization
             between API requests! (e.g. the list [5, 10, 15] will cause the
             wrapper to try three times, once for five seconds, once again for
-            ten seconds, etc.) This defaults to [15, 30, 45]
+            ten seconds, etc.) This defaults to [10, 15, 30]
         """
 
         url = f"{self._base_nasa_url}/neo/rest/v1/feed"
@@ -249,7 +249,7 @@ class NASAClient:
             parameter if specified as well, allowing for further customization
             between API requests! (e.g. the list [5, 10, 15] will cause the
             wrapper to try three times, once for five seconds, once again for
-            ten seconds, etc.) This defaults to [15, 30, 45]
+            ten seconds, etc.) This defaults to [10, 15, 30]
         """
 
         url = f"{self._base_nasa_url}/neo/rest/v1/neo/{asteroid_id}"
@@ -303,7 +303,7 @@ class NASAClient:
             parameter if specified as well, allowing for further customization
             between API requests! (e.g. the list [5, 10, 15] will cause the
             wrapper to try three times, once for five seconds, once again for
-            ten seconds, etc.) This defaults to [15, 30, 45]
+            ten seconds, etc.) This defaults to [10, 15, 30]
         """
 
         url = f"{self._base_nasa_url}/neo/rest/v1/neo/browse"
@@ -369,7 +369,7 @@ class NASAClient:
             parameter if specified as well, allowing for further customization
             between API requests! (e.g. the list [5, 10, 15] will cause the
             wrapper to try three times, once for five seconds, once again for
-            ten seconds, etc.) This defaults to [15, 30, 45]
+            ten seconds, etc.) This defaults to [10, 15, 30]
         """
 
         url = f"{self._base_nasa_url}/DONKI/CME"
@@ -467,7 +467,7 @@ class NASAClient:
             parameter if specified as well, allowing for further customization
             between API requests! (e.g. the list [5, 10, 15] will cause the
             wrapper to try three times, once for five seconds, once again for
-            ten seconds, etc.) This defaults to [15, 30, 45]
+            ten seconds, etc.) This defaults to [10, 15, 30]
         """
 
         url = f"{self._base_nasa_url}/DONKI/CMEAnalysis"
@@ -549,7 +549,7 @@ class NASAClient:
             parameter if specified as well, allowing for further customization
             between API requests! (e.g. the list [5, 10, 15] will cause the
             wrapper to try three times, once for five seconds, once again for
-            ten seconds, etc.) This defaults to [15, 30, 45]
+            ten seconds, etc.) This defaults to [10, 15, 30]
         """
 
         url = f"{self._base_nasa_url}/DONKI/GST"
@@ -629,7 +629,7 @@ class NASAClient:
             parameter if specified as well, allowing for further customization
             between API requests! (e.g. the list [5, 10, 15] will cause the
             wrapper to try three times, once for five seconds, once again for
-            ten seconds, etc.) This defaults to [15, 30, 45]
+            ten seconds, etc.) This defaults to [10, 15, 30]
         """
 
         url = f"{self._base_nasa_url}/DONKI/IPS"
@@ -703,7 +703,7 @@ class NASAClient:
             parameter if specified as well, allowing for further customization
             between API requests! (e.g. the list [5, 10, 15] will cause the
             wrapper to try three times, once for five seconds, once again for
-            ten seconds, etc.) This defaults to [15, 30, 45]
+            ten seconds, etc.) This defaults to [10, 15, 30]
         """
 
         url = f"{self._base_nasa_url}/DONKI/FLR"
@@ -773,7 +773,7 @@ class NASAClient:
             parameter if specified as well, allowing for further customization
             between API requests! (e.g. the list [5, 10, 15] will cause the
             wrapper to try three times, once for five seconds, once again for
-            ten seconds, etc.) This defaults to [15, 30, 45]
+            ten seconds, etc.) This defaults to [10, 15, 30]
         """
 
         url = f"{self._base_nasa_url}/DONKI/SEP"
@@ -843,7 +843,7 @@ class NASAClient:
             parameter if specified as well, allowing for further customization
             between API requests! (e.g. the list [5, 10, 15] will cause the
             wrapper to try three times, once for five seconds, once again for
-            ten seconds, etc.) This defaults to [15, 30, 45]
+            ten seconds, etc.) This defaults to [10, 15, 30]
         """
 
         url = f"{self._base_nasa_url}/DONKI/MPC"
@@ -913,7 +913,7 @@ class NASAClient:
             parameter if specified as well, allowing for further customization
             between API requests! (e.g. the list [5, 10, 15] will cause the
             wrapper to try three times, once for five seconds, once again for
-            ten seconds, etc.) This defaults to [15, 30, 45]
+            ten seconds, etc.) This defaults to [10, 15, 30]
         """
 
         url = f"{self._base_nasa_url}/DONKI/RBE"
@@ -983,7 +983,7 @@ class NASAClient:
             parameter if specified as well, allowing for further customization
             between API requests! (e.g. the list [5, 10, 15] will cause the
             wrapper to try three times, once for five seconds, once again for
-            ten seconds, etc.) This defaults to [15, 30, 45]
+            ten seconds, etc.) This defaults to [10, 15, 30]
         """
 
         url = f"{self._base_nasa_url}/DONKI/HSS"
@@ -1053,7 +1053,7 @@ class NASAClient:
             parameter if specified as well, allowing for further customization
             between API requests! (e.g. the list [5, 10, 15] will cause the
             wrapper to try three times, once for five seconds, once again for
-            ten seconds, etc.) This defaults to [15, 30, 45]
+            ten seconds, etc.) This defaults to [10, 15, 30]
         """
 
         url = f"{self._base_nasa_url}/DONKI/WSAEnlilSimulations"
@@ -1128,7 +1128,7 @@ class NASAClient:
             parameter if specified as well, allowing for further customization
             between API requests! (e.g. the list [5, 10, 15] will cause the
             wrapper to try three times, once for five seconds, once again for
-            ten seconds, etc.) This defaults to [15, 30, 45]
+            ten seconds, etc.) This defaults to [10, 15, 30]
         """
 
         url = f"{self._base_nasa_url}/DONKI/notifications"
@@ -1253,7 +1253,7 @@ class NASAClient:
             parameter if specified as well, allowing for further customization
             between API requests! (e.g. the list [5, 10, 15] will cause the
             wrapper to try three times, once for five seconds, once again for
-            ten seconds, etc.) This defaults to [15, 30, 45]
+            ten seconds, etc.) This defaults to [10, 15, 30]
         """
 
         url = f"{self._base_eonet_url}/events"
@@ -1394,7 +1394,7 @@ class NASAClient:
             parameter if specified as well, allowing for further customization
             between API requests! (e.g. the list [5, 10, 15] will cause the
             wrapper to try three times, once for five seconds, once again for
-            ten seconds, etc.) This defaults to [15, 30, 45]
+            ten seconds, etc.) This defaults to [10, 15, 30]
         """
 
         url = f"{self._base_eonet_url}/events"
@@ -1512,7 +1512,7 @@ class NASAClient:
             parameter if specified as well, allowing for further customization
             between API requests! (e.g. the list [5, 10, 15] will cause the
             wrapper to try three times, once for five seconds, once again for
-            ten seconds, etc.) This defaults to [15, 30, 45]
+            ten seconds, etc.) This defaults to [10, 15, 30]
         """
 
         url = f"{self._base_eonet_url}/categories"
@@ -1596,7 +1596,7 @@ class NASAClient:
             parameter if specified as well, allowing for further customization
             between API requests! (e.g. the list [5, 10, 15] will cause the
             wrapper to try three times, once for five seconds, once again for
-            ten seconds, etc.) This defaults to [15, 30, 45]
+            ten seconds, etc.) This defaults to [10, 15, 30]
         """
 
         url = f"{self._base_eonet_url}/layers/{category}"
