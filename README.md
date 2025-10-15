@@ -318,9 +318,109 @@ The output:
 console
 
 [{'copyright': '\n\nJohannes Schedler\n(Panther Observatory)\n\n', 'date': '2005-06-07', 'explanation': 'Galaxies abound in this cosmic scene, a well chosen telescopic view toward the northern constellation of Ursa Major. Most noticeable are the striking pair of spiral galaxies - NGC 3718 (above, right) and NGC 3729 (below center) - a mere 52 million light-years distant. In particular, NGC 3718 has dramatic dust lanes sweeping through its bright central region and extensive but faint spiral arms. Seen about 150 thousand light-years apart, these two galaxies are likely interacting gravitationally, accounting for the warped and peculiar appearance of NGC 3718. While a careful study of the deep image reveals a number of fainter and more distant background galaxies, another remarkable galaxy grouping known as Hickson Group 56 can be found just to the right of NGC 3718. Hickson Group 56 contains five interacting galaxies and lies over 400 million light-years away.', 'hdurl': 'https://apod.nasa.gov/apod/image/0506/ngc3718etc_schedler_full.jpg', 'media_type': 'image', 'service_version': 'v1', 'title': 'Galaxies in View', 'url': 'https://apod.nasa.gov/apod/image/0506/ngc3718etc_schedler_c38.jpg'}]
-
-Process finished with exit code 0
 ```
+
+---
+
+### Timeout Handling:
+
+If a request times out
+after the initial 10 second
+timeout window, the wrapper will
+retry two times by default,
+once for fifteen seconds, and
+then lastly, for thirty seconds.
+This behavior can be overridden
+in multiple ways to hopefully
+fit any use case! This
+can be done via the
+'default_retry_delays' base class parameter, and
+via the 'retry_delays' parameter within
+each class method!
+
+#### Default Retry Delays:
+
+Specifying 'default_retry_delays' will **NOT** override
+the behavior of the separate
+'retry_delays' parameter within each class
+method. This allows for configuration
+of the global default delays
+AND specific class methods at
+once with expected behavior!
+
+```
+python
+
+from pyspaceapi import NASAClient
+
+
+client = NASAClient(default_retry_delays=[5, 10, 15])
+```
+
+This, for example, will make
+the wrapper attempt to request
+three times. Once for five
+seconds, again for 10 seconds,
+and then lastly, for fifteen
+seconds.
+
+#### Retry Delays (Class Method Specific):
+
+Specifying the 'retry_delays' parameter **WILL**
+override the behavior of the
+global 'default_retry_delays' base class parameter.
+This means that you can
+have multiple different requests with
+timeout delays differing from each
+other AND differing from the
+default timeout delays.
+
+Example using multiple different delays:
+
+```
+python
+
+from pyspaceapi import NASAClient
+
+
+client = NASAClient(default_retry_delays=[10, 20, 30]) # Specifies the default retry delays
+
+
+eonet_data = client.eonet_events() # Will use the default retry delays since 'retry_delays' is unspecified
+apod_data = client.apod(retry_delays=[5, 10, 15]) # Will use 5, 10, and then 15 seconds
+neows_data = client.neows_browse(retry_delays=[2, 5, 7.5]) # Will use 2, 5, and then 7.5 seconds
+```
+
+#### Timeout Prints:
+
+Along with this, I have
+also included a 'timeout_prints' base
+class parameter, which when set
+to True, will enable some
+debug timeout prints. This is
+set to false by default.
+
+```
+python
+
+from pyspaceapi import NASAClient
+
+
+client = NASAClient(timeout_print=True)
+```
+
+These will look something like
+so:
+
+```
+console
+
+(Request timed out after 10 seconds. Retrying for 15 seconds.)
+
+(Request timed out after 15 seconds. Retrying for 30 seconds.)
+```
+
+---
 
 ### Debug Tools:
 
