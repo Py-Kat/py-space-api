@@ -48,6 +48,7 @@ class NASAClient:
             This defaults to False.
         """
 
+        # Requests Session and API Key
         self._session = requests.Session()
         self._api_key = api_key
 
