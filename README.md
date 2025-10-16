@@ -204,7 +204,7 @@ The PyPI project can also
 be viewed by clicking this
 link: https://pypi.org/project/pyspaceapis
 
-> ### ❗
+> ### ⚠️
 > 
 > Due to a conflict with
 > an apparent non-existent package on
