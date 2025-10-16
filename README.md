@@ -325,7 +325,7 @@ console
 ### Timeout Handling:
 
 If a request times out
-after the initial 10 second
+after the initial default ten-second
 timeout window, the wrapper will
 retry two times by default,
 once for fifteen seconds, and
@@ -334,19 +334,22 @@ This behavior can be overridden
 in multiple ways to hopefully
 fit any use case! This
 can be done via the
-'default_retry_delays' base class parameter, and
-via the 'retry_delays' parameter within
-each class method!
+'default_retry_delays' class parameter and further
+customized via the 'retry_delays' parameter
+within each class method!
 
 #### Default Retry Delays:
 
-Specifying 'default_retry_delays' will **NOT** override
-the behavior of the separate
-'retry_delays' parameter within each class
-method. This allows for configuration
-of the global default delays
-AND specific class methods at
-once with expected behavior!
+The 'default_retry_delays' parameter will **NOT**
+override the behavior of the
+separate 'retry_delays' parameter within each
+class method if 'retry_delays' is
+specified. This allows for configuration
+of the 'default_retry_delays' AND the
+'retry_delays' parameters at once without
+causing conflicts.
+
+Setting default retry delays:
 
 ```
 python
@@ -357,25 +360,29 @@ from pyspaceapi import NASAClient
 client = NASAClient(default_retry_delays=[5, 10, 15])
 ```
 
-This, for example, will make
+This, for example, will cause
 the wrapper attempt to request
 three times. Once for five
 seconds, again for 10 seconds,
 and then lastly, for fifteen
-seconds.
+seconds. This is set to
+[10, 15, 30] by default if not
+specified.
 
 #### Retry Delays (Class Method Specific):
 
 Specifying the 'retry_delays' parameter **WILL**
 override the behavior of the
-global 'default_retry_delays' base class parameter.
-This means that you can
-have multiple different requests with
-timeout delays differing from each
-other AND differing from the
-default timeout delays.
+'default_retry_delays' class parameter, specified or
+not. This means that you
+can have multiple different requests
+with timeout delays differing from
+each other AND independent of
+the default timeout delays without
+causing conflict.
 
-Example using multiple different delays:
+Example using default_retry_delays and retry_delays
+simultaneously:
 
 ```
 python
@@ -386,19 +393,22 @@ from pyspaceapi import NASAClient
 client = NASAClient(default_retry_delays=[10, 20, 30]) # Specifies the default retry delays
 
 
-eonet_data = client.eonet_events() # Will use the default retry delays since 'retry_delays' is unspecified
+eonet_data = client.eonet_events() # Will use 'default_retry_delays' since 'retry_delays' is unspecified
 apod_data = client.apod(retry_delays=[5, 10, 15]) # Will use 5, 10, and then 15 seconds
 neows_data = client.neows_browse(retry_delays=[2, 5, 7.5]) # Will use 2, 5, and then 7.5 seconds
 ```
 
 #### Timeout Prints:
 
-Along with this, I have
-also included a 'timeout_prints' base
-class parameter, which when set
-to True, will enable some
-debug timeout prints. This is
-set to false by default.
+Along with the main timeout
+handling, I have also included
+a 'timeout_prints' class parameter, which
+when set to True, will
+enable the debug timeout prints.
+This is set to false
+by default.
+
+Enabling the timeout prints:
 
 ```
 python
@@ -409,8 +419,8 @@ from pyspaceapi import NASAClient
 client = NASAClient(timeout_print=True)
 ```
 
-These will look something like
-so:
+The prints will appear as
+such:
 
 ```
 console
