@@ -45,25 +45,5 @@ dict
 EONET endpoints to the README
 
 
-- Changed the API request example
-in the README as well
-as correcting the structure of
-the text and other smaller
-adjustments to the README
-
-
-- Added more documentation to the
-README about all endpoints
-
-
-- Added links to specific methods
-in the GitHub repository to
-the README for more clarification
-
-
-- Added missing quotations to text
-sourced from NASA web pages
-
-
 - Slightly improved the contents of
 some docstrings
