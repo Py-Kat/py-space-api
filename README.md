@@ -288,11 +288,11 @@ NASA endpoints!
 ### Example API Request:
 
 *This program will search the
-NASA Astronomy Picture of the
-Day endpoint and return a
-python dict containing the data
-of a single random APOD
-entry!*
+NASA Near Earth Object Web
+Service (NeoWs) endpoint and return
+a python dict containing the
+data of a single specified
+asteroid ID!*
 
 ```
 python
@@ -303,8 +303,8 @@ from pyspaceapi import NASAClient
 # Replace 'DEMO_KEY' if you plan to use your own NASA API key!
 client = NASAClient("DEMO_KEY")
 
-# Get one random APOD entry
-data = client.apod(count=1)
+# Search for a specified asteroid ID
+data = client.neows_lookup(2001980)
 print(data)
 ```
 
@@ -317,7 +317,8 @@ The output:
 ```
 console
 
-[{'copyright': '\n\nJohannes Schedler\n(Panther Observatory)\n\n', 'date': '2005-06-07', 'explanation': 'Galaxies abound in this cosmic scene, a well chosen telescopic view toward the northern constellation of Ursa Major. Most noticeable are the striking pair of spiral galaxies - NGC 3718 (above, right) and NGC 3729 (below center) - a mere 52 million light-years distant. In particular, NGC 3718 has dramatic dust lanes sweeping through its bright central region and extensive but faint spiral arms. Seen about 150 thousand light-years apart, these two galaxies are likely interacting gravitationally, accounting for the warped and peculiar appearance of NGC 3718. While a careful study of the deep image reveals a number of fainter and more distant background galaxies, another remarkable galaxy grouping known as Hickson Group 56 can be found just to the right of NGC 3718. Hickson Group 56 contains five interacting galaxies and lies over 400 million light-years away.', 'hdurl': 'https://apod.nasa.gov/apod/image/0506/ngc3718etc_schedler_full.jpg', 'media_type': 'image', 'service_version': 'v1', 'title': 'Galaxies in View', 'url': 'https://apod.nasa.gov/apod/image/0506/ngc3718etc_schedler_c38.jpg'}]
+{'links': {'self': 'http://api.nasa.gov/neo/rest/v1/neo/2001980?api_key=DEMO_KEY'}, 'id': '2001980', 'neo_reference_id': '2001980', 'name': '1980 Tezcatlipoca (1950 LA)', 'name_limited': 'Tezcatlipoca', 'designation': '1980', 'nasa_jpl_url': 'https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html#/?sstr=2001980', 'absolute_magnitude_h': 13.81, 'estimated_diameter': {'kilometers': {'estimated_diameter_min': 4.5978518828, 'estimated_diameter_max': 10.2811093604}, 'meters': {'estimated_diameter_min': 4597.8518827937, 'estimated_diameter_max': 10281.1093604022}, 'miles': {'estimated_diameter_min': 2.8569718223, 'estimated_diameter_max': 6.3883832044}, 'feet': {'estimated_diameter_min': 15084.816371145, 'estimated_diameter_max': 33730.6748339819}}, 'is_potentially_hazardous_asteroid': False, 'close_approach_data': [], 'orbital_data': {'orbit_id': '921', 'orbit_determination_date': '2025-05-29 06:22:26', 'first_observation_date': '1950-06-19', 'last_observation_date': '2025-05-27', 'data_arc_in_days': 27371, 'observations_used': 8203, 'orbit_uncertainty': '0', 'minimum_orbit_intersection': '.245041', 'jupiter_tisserand_invariant': '3.996', 'epoch_osculation': '2461000.5', 'eccentricity': '.3647058342921514', 'semi_major_axis': '1.709394204644144', 'inclination': '26.86993780988122', 'ascending_node_longitude': '246.5426397033398', 'orbital_period': '816.3225014335094', 'perihelion_distance': '1.085968165105233', 'perihelion_argument': '115.4724980863188', 'aphelion_distance': '2.332820244183056', 'perihelion_time': '2461337.243438208260', 'mean_anomaly': '211.4954107695293', 'mean_motion': '.4410021766738259', 'equinox': 'J2000', 'orbit_class': {'orbit_class_type': 'AMO', 'orbit_class_description': 'Near-Earth asteroid orbits similar to that of 1221 Amor', 'orbit_class_range': '1.017 AU < q (perihelion) < 1.3 AU'}}, 'is_sentry_object': False}
+
 ```
 
 ---
@@ -390,12 +391,18 @@ python
 from pyspaceapi import NASAClient
 
 
-client = NASAClient(default_retry_delays=[10, 20, 30]) # Specifies the default retry delays
+# Specifies the default retry delays
+client = NASAClient(default_retry_delays=[10, 20, 30])
 
 
-eonet_data = client.eonet_events() # Will use 'default_retry_delays' since 'retry_delays' is unspecified
-apod_data = client.apod(retry_delays=[5, 10, 15]) # Will use 5, 10, and then 15 seconds
-neows_data = client.neows_browse(retry_delays=[2, 5, 7.5]) # Will use 2, 5, and then 7.5 seconds
+# Will use 'default_retry_delays' since 'retry_delays' is unspecified
+eonet_data = client.eonet_events()
+
+# Will use 5, 10, and then 15 seconds
+donki_data = client.donki_notifications(retry_delays=[5, 10, 15])
+
+# Will use 2, 5, and then 7.5 seconds
+neows_data = client.neows_browse(retry_delays=[2, 5, 7.5])
 ```
 
 #### Timeout Prints:
@@ -428,6 +435,7 @@ console
 (Request timed out after 10 seconds. Retrying for 15 seconds.)
 
 (Request timed out after 15 seconds. Retrying for 30 seconds.)
+
 ```
 
 ---
@@ -468,6 +476,7 @@ Did something!
 
 
 (Finished in: 1.7000 seconds.)
+
 ```
 
 # | Final Notes:
