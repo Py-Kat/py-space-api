@@ -61,6 +61,58 @@ class NASAClient:
         if not timeout_print:
             self._timeout_print = ""
 
+    def get_headers(self,
+                    remaining_amount: bool | None = True,
+                    total_amount: bool | None = True) -> dict:
+        """
+         Using this class method, you can retrieve the X-RateLimit
+         HTTP headers containing the remaining requests and total
+         requests for the current API key in-use within the NASAClient
+         class as a dict! If both parameters are unspecified,
+         this method will return both headers by default.
+
+         rate_limit_remaining: This is the number of requests remaining
+         until the count is reset upon the next hour.
+
+         rate_limit_total: This is the total number of requests allowed
+         for the given API key within the hour reset window.
+
+         :param remaining_amount: Whether to retrieve the
+            number of remaining requests. This defaults to True.
+
+        :param total_amount: Whether to retrieve the total
+            number of requests. This defaults to True.
+        """
+
+        if not remaining_amount and not total_amount:
+            raise TypeError(
+                "Both remaining_amount and total_amount cannot be False."
+            )
+
+        response = self._session.get(f"{self._base_nasa_url}/neo/rest/v1/neo/2001980?api_key={self._api_key}")
+
+        remaining = response.headers.get("X-RateLimit-Remaining")
+        total = response.headers.get("X-RateLimit-Limit")
+
+        headers = None
+        if remaining_amount:
+            headers = {
+                "rate_limit_remaining": remaining
+            }
+
+        if total_amount:
+            headers = {
+                "rate_limit_total": total
+            }
+
+        if remaining_amount and total_amount:
+            headers = {
+                "rate_limit_remaining": remaining,
+                "rate_limit_total": total
+            }
+
+        return headers
+
     # Astronomy Picture of the Day API ( APOD )
     def apod(self,
              date: str | None = None,

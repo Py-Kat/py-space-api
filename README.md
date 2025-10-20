@@ -440,6 +440,62 @@ console
 
 ---
 
+### Retrieving Headers:
+
+There is also a method
+of retrieving the HTTP header
+data as a dict, containing
+the current number of requests
+remaining, and the total number
+of requests for the API
+key in-use via the `get_headers`
+class method!
+
+*This counter resets every hour
+on a rolling basis!*
+
+Retrieving header data:
+
+```
+python
+
+from pyspaceapis import NASAClient
+
+
+client = NASAClient("DEMO_KEY")
+
+headers = client.get_headers()
+print(headers)
+```
+
+This, by default with no
+specified parameters, will return both
+the remaining and total number
+of requests as a dict!
+
+This will appear like so:
+
+```
+console
+
+{'rate_limit_remaining': '7', 'rate_limit_total': '10'}
+
+```
+
+Whether you only want the
+remaining number, or the total
+number can also be specified
+via the `remaining_amount` and `total_amount`
+parameters!
+
+*More specifics about API key
+rate limiting and amounts can
+be read [**here**](https://api.nasa.gov), under the
+"How Do I See My
+Current Usage?" section.*
+
+---
+
 ### Debug Tools:
 
 Along with the endpoint methods,
