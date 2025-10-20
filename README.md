@@ -212,7 +212,7 @@ link: https://pypi.org/project/pyspaceapis
 > installation is *slightly* different than
 > the one used when importing.
 > Please be sure to correctly
-> install 'pyspaceapis'. The exact commands
+> install `pyspaceapis`. The exact commands
 > for installation can be copied
 > below!
 
@@ -335,19 +335,19 @@ This behavior can be overridden
 in multiple ways to hopefully
 fit any use case! This
 can be done via the
-'default_retry_delays' class parameter and further
-customized via the 'retry_delays' parameter
+`default_retry_delays` class parameter and further
+customized via the `retry_delays` parameter
 within each class method!
 
 #### Default Retry Delays:
 
-The 'default_retry_delays' parameter will **NOT**
+The `default_retry_delays` parameter will **NOT**
 override the behavior of the
-separate 'retry_delays' parameter within each
-class method if 'retry_delays' is
+separate `retry_delays` parameter within each
+class method if `retry_delays` is
 specified. This allows for configuration
-of the 'default_retry_delays' AND the
-'retry_delays' parameters at once without
+of the `default_retry_delays` AND the
+`retry_delays` parameters at once without
 causing conflicts.
 
 Setting default retry delays:
@@ -372,9 +372,9 @@ specified.
 
 #### Retry Delays (Class Method Specific):
 
-Specifying the 'retry_delays' parameter **WILL**
+Specifying the `retry_delays` parameter **WILL**
 override the behavior of the
-'default_retry_delays' class parameter, specified or
+`default_retry_delays` class parameter, specified or
 not. This means that you
 can have multiple different requests
 with timeout delays differing from
@@ -409,7 +409,7 @@ neows_data = client.neows_browse(retry_delays=[2, 5, 7.5])
 
 Along with the main timeout
 handling, I have also included
-a 'timeout_prints' class parameter, which
+a `timeout_prints` class parameter, which
 when set to True, will
 enable the debug timeout prints.
 This is set to false
@@ -444,9 +444,9 @@ console
 
 Along with the endpoint methods,
 I have included another separate
-module named: '[**debugtools**](https://github.com/Py-Kat/py-space-api/blob/1e1725859abd83743531d76eb4d592371f675054/pyspaceapi/debugtools.py)' which contains
+module named: [**`debugtools`**](https://github.com/Py-Kat/py-space-api/blob/1e1725859abd83743531d76eb4d592371f675054/pyspaceapi/debugtools.py) which contains
 just one tool for now,
-being the '[**time_this**](https://github.com/Py-Kat/py-space-api/blob/1e1725859abd83743531d76eb4d592371f675054/pyspaceapi/debugtools.py#L5)' decorator!
+being the [**`time_this`**](https://github.com/Py-Kat/py-space-api/blob/1e1725859abd83743531d76eb4d592371f675054/pyspaceapi/debugtools.py#L5) decorator!
 
 Usage would appear something
 like this:
