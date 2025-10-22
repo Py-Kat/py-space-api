@@ -30,6 +30,12 @@ module
 
 ## 0.4.0 - 2025-10-11
 
+- Changed PyPI/installation name to `pyspaceapis`
+due to a non-existent package
+apparently already owning it, and
+updated the README example accordingly
+
+
 - Made errors now raise tracebacks
 instead of simply printing an
 error message with an empty
@@ -45,19 +51,13 @@ some docstrings
 
 ## 0.5.0 - 2025-10-20
 
-- Changed PyPI/installation name to `pyspaceapis`
-due to a non-existent package
-apparently already owning it, and
-updated the README example accordingly
-
-
 - Added customizable timeout handling and
 refactored error handling method for
 easier scalability
 
 
 - Added the ability to retrieve
-HTTP header data as a
+Response header data as a
 dict and added documentation to
 the README accordingly
 
