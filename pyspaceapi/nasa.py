@@ -20,7 +20,7 @@ class NASAClient:
         your own by clicking this link: https://api.nasa.gov/#signUp.
 
         Having your own NASA API key will increase the limit
-        of requests to 1000 requests per hour!
+        of requests to 2000 requests per hour!
 
         This is also where you can set the 'default_retry_delays' parameter
         for modifying the values of all request timeouts at once if needed.
@@ -31,7 +31,7 @@ class NASAClient:
 
         :param api_key: Your NASA API key.
             This defaults to the DEMO_KEY.
-            (DEMO_KEY is limited to 30 requests per hour!)
+            (DEMO_KEY is limited to 10 requests per hour!)
 
         :param default_retry_delays: This parameter can be specified
             with a list of floats/integers to override the DEFAULT retry delays
