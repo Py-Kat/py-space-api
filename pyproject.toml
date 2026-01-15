@@ -29,4 +29,4 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/Py-Kat/py-space-api"
+Homepage = "https://github.com/Py-Kat/py-space-apis"
