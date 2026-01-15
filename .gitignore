@@ -1,6 +1,4 @@
 .idea/
-testing.py
-.env
-__pycache__/
-requirements.txt
 build/
+__pycache__
+testing.py
