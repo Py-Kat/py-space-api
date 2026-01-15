@@ -1,6 +1,6 @@
-# 📡 | PySpaceAPI Wrapper!
+# 📡 | PySpaceAPIs Wrapper!
 
-PySpaceAPI is a fairly thin
+PySpaceAPIs is a fairly thin
 (for now at least) API
 wrapper, which aims to provide
 some more ease when it
@@ -40,7 +40,7 @@ API can be found in
 the [**APOD API GitHub
 repository**](https://github.com/nasa/apod-api)"
 
-  - [**apod**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L32)
+  - [**apod**](https://github.com/Py-Kat/py-space-apis/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapis/nasa.py#L32)
     - "This endpoint structures the APOD
     imagery and associated metadata so
     that it can be repurposed
@@ -59,15 +59,15 @@ Asteroid with its NASA JPL
 small body id, as well
 as browse the overall data-set."
 
-  - [**Neo - Feed**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L93)
+  - [**Neo - Feed**](https://github.com/Py-Kat/py-space-apis/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapis/nasa.py#L93)
     - "Retrieve a list of Asteroids based on their closest approach date to Earth."
 
 
-  - [**Neo - Lookup**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L128)
+  - [**Neo - Lookup**](https://github.com/Py-Kat/py-space-apis/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapis/nasa.py#L128)
     - "Look up a specific Asteroid based on its [**NASA JPL small body (SPK-ID) ID**](http://ssd.jpl.nasa.gov/sbdb_query.cgi)"
 
 
-  - [**Neo - Browse**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L151)
+  - [**Neo - Browse**](https://github.com/Py-Kat/py-space-apis/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapis/nasa.py#L151)
     - "Browse the overall Asteroid data-set"
 
 ### [**Space Weather Database Of Notifications, Knowledge, Information**](https://ccmc.gsfc.nasa.gov/tools/DONKI) (DONKI)
@@ -89,57 +89,57 @@ weather activities and comprehensive webservice
 API access to information stored
 in DONKI."
 
-  - [**Coronal Mass Ejection**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L172) (CME)
+  - [**Coronal Mass Ejection**](https://github.com/Py-Kat/py-space-apis/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapis/nasa.py#L172) (CME)
     - Retrieves basic DONKI Coronal Mass Injection analyses (CMEs)
     within a specific time frame!
 
 
-  - [**Coronal Mass Ejection Analysis**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L208)
+  - [**Coronal Mass Ejection Analysis**](https://github.com/Py-Kat/py-space-apis/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapis/nasa.py#L208)
     - Retrieves more robust analyses from DONKI Coronal Mass Injections (CMEs)
     within a specific time frame, accuracy, catalog, and/or keyword!
   
 
-  - [**Geomagnetic Storm**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L284) (GST)
+  - [**Geomagnetic Storm**](https://github.com/Py-Kat/py-space-apis/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapis/nasa.py#L284) (GST)
     - Retrieves DONKI Geomagnetic Storm analyses (GSTs)
     within a specific time frame!
 
 
-  - [**Interplanetary Shock**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L320) (IPS)
+  - [**Interplanetary Shock**](https://github.com/Py-Kat/py-space-apis/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapis/nasa.py#L320) (IPS)
     - Retrieves DONKI Interplanetary Shock analyses (IPSs)
     within a specific time frame, location, and/or catalog!
 
 
-  - [**Solar Flare**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L370) (FLR)
+  - [**Solar Flare**](https://github.com/Py-Kat/py-space-apis/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapis/nasa.py#L370) (FLR)
     - Retrieves DONKI Solar Flare analyses (FLRs)
     within a specific time frame!
 
 
-  - [**Solar Energetic Particle**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L406) (SEP)
+  - [**Solar Energetic Particle**](https://github.com/Py-Kat/py-space-apis/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapis/nasa.py#L406) (SEP)
     - Retrieves DONKI Solar Energetic Particle analyses (SEP)
     within a specific time frame!
 
 
-  - [**Magnetopause Crossing**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L442) (MCP)
+  - [**Magnetopause Crossing**](https://github.com/Py-Kat/py-space-apis/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapis/nasa.py#L442) (MCP)
     - Retrieves DONKI Magnetopause Crossing analyses (MPC)
     within a specific time frame!
 
 
-  - [**Radiation Belt Enhancement**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L478) (RBE)
+  - [**Radiation Belt Enhancement**](https://github.com/Py-Kat/py-space-apis/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapis/nasa.py#L478) (RBE)
     - Retrieves DONKI Radiation Belt Enhancement analyses (RBE)
     within a specific time frame!
 
 
-  - [**Hight Speed Stream**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L514) (HSS)
+  - [**Hight Speed Stream**](https://github.com/Py-Kat/py-space-apis/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapis/nasa.py#L514) (HSS)
     - Retrieves DONKI Hight Speed Stream analyses (HSS)
     within a specific time frame!
 
 
-  - [**WSA+EnlilSimulation**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L550)
+  - [**WSA+EnlilSimulation**](https://github.com/Py-Kat/py-space-apis/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapis/nasa.py#L550)
     - Retrieves DONKI WSA+EnlilSimulation analyses
     within a specific time frame!
 
 
-  - [**Notifications**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L586)
+  - [**Notifications**](https://github.com/Py-Kat/py-space-apis/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapis/nasa.py#L586)
     - Retrieve DONKI Notifications within a specific time frame
     and/or a notification type!
 
@@ -156,28 +156,28 @@ providing a service that links
 those natural events to thematically-related
 web service-enabled image sources (e.g., via WMS, WMTS, etc.)."
 
-  - [**Events**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L630)
+  - [**Events**](https://github.com/Py-Kat/py-space-apis/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapis/nasa.py#L630)
     - Retrieve Earth Observatory Natural Event Tracker (EONET)
     events with up to eleven optional parameters. Such as: Source,
     category, status, limit, days, time frame, magnitude IDs
     and values, and a bounding box!
 
 
-  - [**Events GeoJSON**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L737)
+  - [**Events GeoJSON**](https://github.com/Py-Kat/py-space-apis/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapis/nasa.py#L737)
     - Retrieve Earth Observatory Natural Event Tracker (EONET)
     GeoJSON events with up to eleven optional parameters. Such as:
     Source, category, status, limit, days, time frame, magnitude IDs
     and values, and a bounding box!
 
 
-  - [**Categories**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L844)
+  - [**Categories**](https://github.com/Py-Kat/py-space-apis/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapis/nasa.py#L844)
     - "Categories are the types of events by which individual
     events are cataloged. Categories can be used to filter
     the output of the Categories API and the Layers API.
     The acceptable categories can be accessed via the [**categories JSON**](https://eonet.gsfc.nasa.gov/api/v3/categories)."
 
 
-  - [**Layers**](https://github.com/Py-Kat/py-space-api/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapi/nasa.py#L919)
+  - [**Layers**](https://github.com/Py-Kat/py-space-apis/blob/d2e1f2e4bef5e9aef19d35876546a359ee38f0d9/pyspaceapis/nasa.py#L919)
     - "A Layer is a reference to a specific web service
       (e.g., WMS, WMTS) that can be used to produce imagery
       of a particular NASA data parameter. Layers are mapped
@@ -203,18 +203,6 @@ viewed on [**Line #8 in
 The PyPI project can also
 be viewed by clicking this
 link: https://pypi.org/project/pyspaceapis
-
-> ### ⚠️
-> 
-> Due to a conflict with
-> an apparent non-existent package on
-> PyPI, the name used for
-> installation is *slightly* different than
-> the one used when importing.
-> Please be sure to correctly
-> install `pyspaceapis`. The exact commands
-> for installation can be copied
-> below!
 
 ### Default Installation Method:
 
@@ -274,7 +262,7 @@ the NASA Demo Key.
 ```
 python
 
-from pyspaceapi import NASAClient
+from pyspaceapis import NASAClient
 
 
 # This uses the Demo Key by default
@@ -297,7 +285,7 @@ asteroid ID!*
 ```
 python
 
-from pyspaceapi import NASAClient
+from pyspaceapis import NASAClient
 
 
 # Replace 'DEMO_KEY' if you plan to use your own NASA API key!
@@ -355,7 +343,7 @@ Setting default retry delays:
 ```
 python
 
-from pyspaceapi import NASAClient
+from pyspaceapis import NASAClient
 
 
 client = NASAClient(default_retry_delays=[5, 10, 15])
@@ -388,7 +376,7 @@ simultaneously:
 ```
 python
 
-from pyspaceapi import NASAClient
+from pyspaceapis import NASAClient
 
 
 # Specifies the default retry delays
@@ -420,7 +408,7 @@ Enabling the timeout prints:
 ```
 python
 
-from pyspaceapi import NASAClient
+from pyspaceapis import NASAClient
 
 
 client = NASAClient(timeout_print=True)
@@ -500,9 +488,9 @@ Current Usage?" section.*
 
 Along with the endpoint methods,
 I have included another separate
-module named: [**`debugtools`**](https://github.com/Py-Kat/py-space-api/blob/1e1725859abd83743531d76eb4d592371f675054/pyspaceapi/debugtools.py) which contains
+module named: [**`debugtools`**](https://github.com/Py-Kat/py-space-apis/blob/1e1725859abd83743531d76eb4d592371f675054/pyspaceapis/debugtools.py) which contains
 just one tool for now,
-being the [**`time_this`**](https://github.com/Py-Kat/py-space-api/blob/1e1725859abd83743531d76eb4d592371f675054/pyspaceapi/debugtools.py#L5) decorator!
+being the [**`time_this`**](https://github.com/Py-Kat/py-space-apis/blob/1e1725859abd83743531d76eb4d592371f675054/pyspaceapis/debugtools.py#L5) decorator!
 
 Usage would appear something
 like this:
@@ -510,7 +498,7 @@ like this:
 ```
 python
 
-from pyspaceapi.debugtools import time_this
+from pyspaceapis import time_this
 from time import sleep
 
 
