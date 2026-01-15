@@ -1,4 +1,4 @@
-# PySpaceAPI Changelogs!
+# PySpaceAPIs Changelogs!
 
 ## 0.1.0 - 2025-10-03
 
@@ -69,3 +69,13 @@ the 'api_key' class parameter
 - Made the base URLs class
 attributes rather than instance
 attributes
+
+## 0.6.0 - 2026-1-14
+
+- Changed the package name from
+`pyspaceapi` to `pyspaceapis` to avoid
+confusion during installation and use
+
+
+- Corrected the documented maximum number
+of requests per API key
